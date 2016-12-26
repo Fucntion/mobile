@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>test</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script src="/dist/build.js"></script>
-  </body>
+
+	<head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<title>云商直播</title>
+
+		<script>
+		
+			function getUrlParam(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+				var r = window.location.search.substr(1).match(reg); //匹配目标参数
+				if(r != null) return unescape(r[2]);
+				return null; //返回参数值
+			}
+			
+			var openidUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx7c5d202b6c5c830f&redirect_uri=http%3a%2f%2ftv.icloudinn.com&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+			
+			if(localStorage.isLogin != '1') {
+				localStorage.setItem('isLogin','1');
+				location.href = openidUrl;
+			}
+			
+			var code = getUrlParam('code');
+			console.log(code);
+//			if(code == null) {
+//				location.href = openidUrl
+//			} else {
+//				getUserInfo ? code = code
+//			}
+		</script>
+	</head>
+
+	<body>
+		<div id="app"></div>
+		<script src="/dist/build.js"></script>
+	</body>
+
 </html>
