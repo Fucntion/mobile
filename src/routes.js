@@ -1,6 +1,6 @@
 const routes = [
 {
-	path: '/room',
+	path: '/:id',
 	component: require('./page/room.vue'),
 },{
 	path: '/cover',
