@@ -1,59 +1,89 @@
-var path = require('path')
-var webpack = require('webpack')
+var path = require('path'),
+	webpack = require('webpack'),
+	ExtractTextPlugin = require("extract-text-webpack-plugin"); // 单独打包CSS //npm install --save-dev extract-text-webpack-plugin@2.0.0-beta.4 默认安装的版本有毒
 
 module.exports = {
-	entry: './src/main.js',
+	entry: {
+		main: './src/main.js',
+		vender:['vue','vuex','vue-resource']
+	},
 	output: {
 		path: path.resolve(__dirname, './dist'),
 		publicPath: '/dist/',
-		filename: 'build.js'
+		filename: '[name].js',
+		chunkFilename: "chunks/[name].chunk.js?[hash:8]"
 	},
+	plugins: [
+		new webpack.optimize.CommonsChunkPlugin({
+			name:'vender',
+			filenam:'vender.js'
+		}),
+		new ExtractTextPlugin({
+			filename: 'css/[name].css',
+			allChunks: true
+		}), // 单独打包CSS
+
+	],
 	module: {
+		loaders: [{
+				test: /\.vue$/,
+				loader: 'vue-loader'
+			}, {
+				test: /\.js$/,
+				loader: 'babel-loader', // ES6
+				exclude: /(node_modules|bower_components|ppaweb\\libs\\webpack)/
+			},
 
-		rules: [{
-			test: /\.(css|less)$/,
-			loader: 'style-loader!css-loader!less-loader',
+			// CSS,LESS单独打包
+			{
+				test: /\.css$/,
+				loader: ExtractTextPlugin.extract({
+					fallbackLoader: 'style-loader',
+					loader: 'css-loader'
+				})
+			}, {
+				test: /\.less$/,
+				loader: ExtractTextPlugin.extract({
+					fallbackLoader: 'style-loader',
+					loader: 'css-loader!less-loader'
+				})
+			},
 
-		}, {
-			test: /\.json$/,
-			loader: 'json-loader',
-		}, {
-			test: /\.vue$/,
-			loader: 'vue-loader',
-			options: {
-				// vue-loader options go here
+			{
+				test: /\.(png|jpg|gif)$/,
+				loader: 'url-loader',
+				query: {
+					name: 'img/[name].[ext]?[hash:8]',
+					limit: 8192 // inline base64 URLs for <=8k images, direct URLs for the rest
+				}
+			}, {
+				test: /\.(svg|eot|woff|woff2|ttf)$/,
+				loader: 'file-loader',
+				query: {
+					name: 'font/[name].[ext]'
+				}
 			}
-		}, {
-			test: /\.js$/,
-			loader: 'babel-loader',
-			exclude: /node_modules/
-		}, {
-			test: /\.(png|jpg|gif|svg|eot|woff|woff2|ttf)$/,
-			loader: 'file-loader',
-			options: {
-				name: '[name].[ext]?[hash]'
-			}
-		}]
+		]
 	},
 	resolve: {
-
 		alias: {
 			vue$: 'vue/dist/vue',
 			assets: path.join(__dirname, './src/assets'),
-			plugin: path.join(__dirname, './src/components')
-		}
+			plugin: path.join(__dirname, './src/components'),
+			store: path.join(__dirname, './src/vuex/store.js')
+		},
+		extensions: ['.js', '.vue']
 	},
 	devServer: {
 		historyApiFallback: true,
 		noInfo: true
 	},
 	devtool: '#eval-source-map'
-		//devtool: false
-}
+};
 
 if(process.env.NODE_ENV === 'production') {
 	module.exports.devtool = '#source-map'
-		// http://vue-loader.vuejs.org/en/workflow/production.html
+
 	module.exports.plugins = (module.exports.plugins || []).concat([
 		new webpack.DefinePlugin({
 			'process.env': {

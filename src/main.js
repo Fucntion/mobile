@@ -1,12 +1,22 @@
 import Vue from 'vue'
-import App from './App.vue'
 
-import VueRouter from 'vue-router'
-import routes from './routes'
-Vue.use(VueRouter)
-const router = new VueRouter({
-	routes
-});
+//默认页面,用来获取微信信息等初始化工作
+const App = require('./app')
+//首页,用来挡原子弹，专治各种不服
+const Home = require('./page/home')
+//直播间
+const Room = require('./page/room')
+//封面
+const Cover = require('./page/cover')
+
+const routes = {
+  '/:id': Room,
+  '/cover': Cover,
+  '/':Home,
+  '*':Home
+}
+
+
 
 
 import VueResource from 'vue-resource'
@@ -15,7 +25,6 @@ Vue.http.options.emulateJSON = true;
 Vue.http.options.emulateHTTP = true;
 
 Vue.http.interceptors.push((request, next) => {
-
 
 	var url = 'http://saas.icloudinn.com/api/v1',
 		token = '?access-token='+'6m3vB_FtMzXHeVDN0-fkSPk6GdwoIkMQdvhHG02q';
@@ -26,8 +35,6 @@ Vue.http.interceptors.push((request, next) => {
 		request.url = url + request.url + token;
 	}
 
-
-
 	next((response) => {
 		return response
 	});
@@ -37,6 +44,5 @@ Vue.http.interceptors.push((request, next) => {
 
 new Vue({
   el: '#app',
-  router,
   render: h => h(App)
 })

@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<router-view></router-view>
+		
 	</div>
 </template>
 
@@ -10,20 +10,36 @@
 		data() {
 			return {
 
-//				this.$http
 			}
 		},
 		methods: {
 			init: function() {
-				url = "/rooms"+sessionStorage.getItem('roomId');
-				this.$http.post(url, data).then((response) => {
+				
+				//url中没有room参数，就炸了
+				if(location.href.indexOf('room')==-1){return}
+				
+				function getRoomId(){
+					var hashArr =location.hash.split('/')
+					var index =hashArr.indexOf('room')+1
+					return hashArr.splice(index,1).toString()
+				}
 
-					this.$router.push('studio/' + response.body.id);
-
-				}, (response) => {
-
-				});
+				//获取room参数
+				var roomid = sessionStorage.getItem('roomid') || getRoomId();
+				sessionStorage.setItem('roomid', roomid);
+				
+//				url = "/rooms"+sessionStorage.getItem('roomId');
+//				this.$http.post(url, data).then((response) => {
+//
+//					this.$router.push('studio/' + response.body.id);
+//
+//				}, (response) => {
+//
+//				});
 			}
+		},
+		mounted(){
+			this.init()
 		}
 	}
 </script>

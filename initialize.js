@@ -1,31 +1,16 @@
-//var Home = "tv.icloudinn.com";
-//
-////第一次进入直播间或者从其他直播间跳转过来
-//if(typeof(sessionStorage.getItem('roomid')) == 'undefined' || isNaN(sessionStorage.getItem('roomid'))) {
-//
-//	//连接中没有id
-//	if(location.href.indexOf('roomid') != -1) {
-//		var searchArr = location.search.split('&'),
-//			roomid = null;
-//		for(var k in searchArr) {
-//			var index = searchArr[k].indexOf('roomid='),
-//				indexOf = null;
-//			console.log(searchArr[k]);
-//			if(index == -1) {
-//				continue;
-//			}
-//			var indexOf = searchArr[k].indexOf('roomid=') + 7;
-//
-//			roomid = searchArr[k].split(indexOf);
-//			break; //不考虑有多个id参数的情况下
-//		}
-//
-//		sessionStorage.setItem('roomid', roomid);
-//	}else{
-//		
-//	}
-//
-//}
+
+
+
+
+
+
+	
+	sessionStorage.setItem('roomid', roomid);
+		
+
+
+	
+
 
 //开始获取用户信息
 function send_request(code) {
@@ -48,7 +33,6 @@ function send_request(code) {
 
 function getUrlParam(name) {
 	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-	console.log(reg);
 	var r = window.location.search.substr(1).match(reg); //匹配目标参数
 	if(r != null) return unescape(r[2]);
 	return null; //返回参数值
