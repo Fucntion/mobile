@@ -4,8 +4,8 @@ var path = require('path'),
 
 module.exports = {
 	entry: {
-		main: './src/main.js',
-		vender:['vue','vuex','vue-resource']
+		app: './src/app.js',
+		vender:['vue','vuex','vue-resource','vue-router']
 	},
 	output: {
 		path: path.resolve(__dirname, './dist'),
@@ -72,7 +72,7 @@ module.exports = {
 			plugin: path.join(__dirname, './src/components'),
 			store: path.join(__dirname, './src/vuex/store.js')
 		},
-		extensions: ['.js', '.vue']
+		extensions: ['.js']
 	},
 	devServer: {
 		historyApiFallback: true,

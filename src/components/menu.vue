@@ -1,5 +1,5 @@
 <template>
-	<div class="menuBox">
+	<div class="menuBox" v-if="menuListData.length>0">
 		<template v-for="(menu,index) in menuListData">
 			<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index)">{{menu.title}}</div>
 		</template>
@@ -10,26 +10,11 @@
 	export default {
 
 		name: 'menu',
+		props:['room'],
 		data() {
 
 			return {
-				menuListData: [{
-					title: '讨论区',
-					type: 'communit',
-					isActive:true
-				}, {
-					title: '特价商品',
-					type: 'goods',
-					isActive:false
-				}, {
-					title: '关于我们',
-					type: 'article',
-					isActive:false
-				}, {
-					title: '联系我们',
-					type: 'article',
-					isActive:false
-				}]
+				menuListData:[]
 			}
 
 		},
@@ -48,6 +33,17 @@
 
 				}
 			}
+		},
+		mounted(){
+			console.log(this.room.pluginObj.menu)
+			this.menuListData = this.room.pluginObj.menu
+			this.menuListData.push({
+					title: '边看边聊',
+					type: 'communit',
+					isActive:true
+				})
+			
+			console.log(this.menuListData)
 		}
 	}
 </script>
