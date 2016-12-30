@@ -38,7 +38,7 @@ Vue.http.interceptors.push((request, next) => {
 		
 
 	if(request.url.indexOf('shop=') == 0) {
-		request.url = request.url.substr(5) + token + '&system_id=10'
+		request.url = request.url.substr(5) +'?system_id=10'
 	} else if(request.url.indexOf('mock=') == 0){
 		request.url = request.url.substr(5)
 	}else{

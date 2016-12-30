@@ -1,12 +1,20 @@
 <template>
 	<div class="menuBox" v-if="menuListData.length>0">
-		<template v-for="(menu,index) in menuListData">
-			<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index)">{{menu.title}}</div>
+		<div class="menuItemBox">
+			<template v-for="(menu,index) in menuListData">
+			<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
 		</template>
+		</div>
+		<div class="content_box" :is="curretView" :propsMenu="propsMenu" :key="propsMenu.title">
+			
+		</div>
 	</div>
 </template>
 
 <script>
+	import Communit from './menu/communit.vue'
+	import Show from './menu/show.vue'
+	import Goods from './menu/goods.vue'
 	export default {
 
 		name: 'menu',
@@ -14,52 +22,59 @@
 		data() {
 
 			return {
-				menuListData:[]
+				menuListData:[],
+				curretView:''
 			}
 
 		},
+		components:{
+			Communit,
+			Show,
+			Goods
+		},
+		computed:{
+			propsMenu:function(){
+
+				if(this.curretView==''){return null}
+				for(var k in this.menuListData){
+					if(this.menuListData[k].isActive==true){
+						return this.menuListData[k]
+					}
+				}
+				
+			}
+		},
 		methods: {
-			isActive: function(index) {
+			isActive: function(index,type) {
 			
-				var self = this;
-				for(var key in self.menuListData) {
+
+				for(var key in this.menuListData) {
 					
-					if(key != index) {
-						self.menuListData[key].isActive = false;
+					this.menuListData[key].isActive = false
+					
+					if(key == index) {
+						//需要在初始化的时候就加上isActive属性，不然vue检测不到运行后动态添加的属性
+						this.menuListData[key].isActive = true
+						this.curretView =type 
 						continue;
 					}
-					if(self.menuListData[key].isActive==true)return;//如果已经选中就别重新设置了
-					self.menuListData[key].isActive = true;
+					
 
 				}
 			}
 		},
 		mounted(){
-			console.log(this.room.pluginObj.menu)
-			this.menuListData = this.room.pluginObj.menu
-			this.menuListData.push({
-					title: '边看边聊',
-					type: 'communit',
-					isActive:true
-				})
+			var tempArr =this.room.pluginObj.menu.map(function(x){ 
+				x.isActive=false
+				return x
+			})
+			this.menuListData = [{title: '边看边聊',type: 'communit',isActive:true}].concat(tempArr)
+			this.curretView = 'communit'
 			
-			console.log(this.menuListData)
 		}
 	}
 </script>
 
 <style lang="less">
-	.menuBox {
-		display: flex;
-		.menuItem {
-			flex: 1;
-			text-align: center;
-			height: 44px;
-			line-height: 44px;
-			background: #f2f2f2;
-		}
-		.active{
-			background: white;
-		}
-	}
+	
 </style>

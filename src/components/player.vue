@@ -1,9 +1,10 @@
 <template>
-	<video-player :options="videoOptions"></video-player>
+
+	<iframe id="TcPlayer" name="TcPlayer" src="./TcPlayer.html"  frameborder="0" scrolling="no"></iframe>
 </template>
 
+
 <script>
-	import { videoPlayer } from 'vue-video-player'
 
 	export default {
 
@@ -30,18 +31,24 @@
 
 		},
 		components: {
-			videoPlayer
+		
 		},
 		methods: {
 
 		},
 		mounted(){
-
-			this.videoOptions.source.src =this.room.hls_downstream_address
+		
+//			this.videoOptions.source.src =this.room.hls_downstream_address
+			document.getElementById('TcPlayer').style.height = document.body.clientWidth*9/16+'px'
+			window.hls = this.room.hls_downstream_address
 		}
 	}
 </script>
 
 <style lang="less">
+#TcPlayer{
+	width: 100%;
+	/*border: 0;*/
+}
 
 </style>

@@ -66,6 +66,7 @@
 			}
 		},
 		mounted() {
+
 			this.setRoomId()
 			this.setUsrInfo()
 		}

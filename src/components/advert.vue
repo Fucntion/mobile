@@ -1,5 +1,5 @@
 <template>
-	<swiper :options="swiperOption" class="advertBox" v-id="advertListData.length>0">
+	<swiper :options="swiperOption" class="advertBox" v-if="advertListData.length>0">
 		<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
 	</swiper>
 </template>
@@ -11,7 +11,6 @@
 		swiperPlugins
 	} from 'vue-awesome-swiper'
 	export default {
-
 		name: 'advert',
 		props:['room'],
 		data() {
@@ -43,7 +42,5 @@
 </script>
 
 <style lang="less">
-.advertBox{
-	height: 100px;
-}
+
 </style>

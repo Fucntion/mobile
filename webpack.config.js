@@ -19,7 +19,7 @@ module.exports = {
 			filenam:'vender.js'
 		}),
 		new ExtractTextPlugin({
-			filename: 'css/[name].css',
+			filename: 'css/[name].css?[contenthash]',
 			allChunks: true
 		}), // 单独打包CSS
 
