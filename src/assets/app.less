@@ -1,32 +1,43 @@
 *{
     margin: 0;
     padding: 0;
-//  border: 1px solid red;
+ // border: 1px solid red;
 }
-
+html,body{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
 body{
-
     color: #222222;
     font-size: 16px;
     font-family: "Microsoft YaHei",Arial,sans-serif;
+    overflow: hidden;
 }
 h1,h2,h3,h4,h5,h6{
     font-weight: 400;
 }
 
-
+/*
+ * player
+ */
+#TcPlayer_iframe{
+    width: 100%;
+    height: 100%;
+}
 
 /*
- * menu
+ * advert
  */
 
-/*advert*/
 .advertBox{
     height: 80px;
 }
 
 
-/*menu*/
+/*
+ * menu
+ */
 
 .menuItemBox {
     display: flex;
@@ -43,8 +54,22 @@ h1,h2,h3,h4,h5,h6{
     
 }
 .content_box{
-    padding: 10px;
+//  margin-top: 10px;
+    padding: 0 10px;
+    overflow-y: scroll;
+
 }
+
+//communit
+.communit_box{
+    padding: 0;
+//  overflow: hidden;
+    #communit_iframe{
+    width: 100%;
+    height: 100%;
+    }
+}
+
 
 
 //goods
@@ -83,9 +108,16 @@ h1,h2,h3,h4,h5,h6{
         }
     }
 }
-//show
 
-//communit
+
+//show
+.show_box{
+    line-height: 1.4;
+     img{
+        max-width: 100%;
+    }
+}
+
 
 
 

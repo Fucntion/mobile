@@ -5,7 +5,7 @@
 			<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
 		</template>
 		</div>
-		<div class="content_box" :is="curretView" :propsMenu="propsMenu" :key="propsMenu.title">
+		<div class="content_box" :is="curretView" :propsMenu="propsMenu" :key="propsMenu">
 			
 		</div>
 	</div>
@@ -61,6 +61,9 @@
 					
 
 				}
+				this.$nextTick(function () {
+					this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
+				})		
 			}
 		},
 		mounted(){
@@ -70,6 +73,11 @@
 			})
 			this.menuListData = [{title: '边看边聊',type: 'communit',isActive:true}].concat(tempArr)
 			this.curretView = 'communit'
+			this.$nextTick(function () {
+				//margin-top 10
+				this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
+			})
+
 			
 		}
 	}

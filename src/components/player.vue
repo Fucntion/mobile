@@ -1,6 +1,6 @@
 <template>
 
-	<iframe id="TcPlayer" name="TcPlayer" src="./TcPlayer.html"  frameborder="0" scrolling="no"></iframe>
+	<div id="TcPlayer"><iframe id="TcPlayer_iframe" name="TcPlayer" src="./static/TcPlayer.html"  frameborder="0" scrolling="no"></iframe></div>
 </template>
 
 
@@ -37,8 +37,7 @@
 
 		},
 		mounted(){
-		
-//			this.videoOptions.source.src =this.room.hls_downstream_address
+
 			document.getElementById('TcPlayer').style.height = document.body.clientWidth*9/16+'px'
 			window.hls = this.room.hls_downstream_address
 		}
@@ -46,9 +45,6 @@
 </script>
 
 <style lang="less">
-#TcPlayer{
-	width: 100%;
-	/*border: 0;*/
-}
+
 
 </style>

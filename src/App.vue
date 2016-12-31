@@ -19,7 +19,8 @@
 				var hashArr = location.hash.split('/')
 				var index = hashArr.indexOf('room') + 1
 				var roomid =hashArr.splice(index, 1).toString()
-				if(roomid!==sessionStorage.getItem('roomid')){
+				console.log(roomid)
+				if(roomid!==sessionStorage.getItem('roomid')||!sessionStorage.getItem('roomid')){
 					sessionStorage.setItem('roomid', roomid)
 				}
 	
@@ -36,7 +37,7 @@
 					localStorage.setItem('isLogin', '1')
 					location.href = openidUrl
 				}
-				
+
 				if(location.href.indexOf('code') != -1) {
 
 					function getUrlParam(name) {
@@ -51,8 +52,9 @@
 					this.$http.get('mock=http://tv.icloudinn.com/wx.php?code=' + code).then((response) => {
 						//sucss dosomething
 						localStorage.setItem('usrInfo', response.body)
-						localStorage.setItem('openid', JSON.parse(response.body).openid)
-						location.reload()
+						var result = JSON.parse(response.body)
+						localStorage.setItem('openid', result.openid)
+//						location.reload()
 					}, (response) => {
 						//error dosomething
 					})
@@ -66,9 +68,9 @@
 			}
 		},
 		mounted() {
-
+			
 			this.setRoomId()
-			this.setUsrInfo()
+			// this.setUsrInfo()
 		}
 	}
 </script>

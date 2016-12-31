@@ -1,9 +1,9 @@
 <template>
 	<div class="room" v-if="show">
 		<Player-Box :room="roomObj"></Player-Box>
-		<Advert-Box :room="roomObj"></Advert-Box>
+		<!-- <Advert-Box :room="roomObj"></Advert-Box> -->
 		<Menu-Box :room="roomObj"></Menu-Box>
-		<button @click="clear()" style="position:absolute;left:0;bottom:0;font-size: 16px;padding: 5px 10px;">双清</button>
+		<!--<button @click="clear()" style="position:absolute;left:0;top:0;font-size: 16px;padding: 5px 10px;">双清</button>-->
 	</div>
 </template>
 
@@ -11,7 +11,6 @@
 	import PlayerBox from 'plugin/player.vue'
 	import AdvertBox from 'plugin/advert.vue'
 	import MenuBox from 'plugin/menu.vue'
-	
 	export default {
 
 		name: 'room',
@@ -44,8 +43,9 @@
 				    	if(this.roomObj.logo_url!=''){
 				    		document.getElementById('shareImg').src=this.roomObj.logo_url
 				    	}
+				    	
+				    	
 				    })
-					
 					
 					this.show =true
 				},(response)=>{
@@ -55,6 +55,7 @@
 		},
 		mounted(){
 			this.init()
+
 		}
 	}
 </script>

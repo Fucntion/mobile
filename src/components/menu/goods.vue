@@ -1,6 +1,6 @@
 <template>
-<div class="goods_box"  v-if="show">
-	<template  v-for="(item,index) in goodsList">
+<div class="goods_box" >
+	<template  v-for="(item,index) in goodsList"  v-if="show">
 		<div class="goods_item">
 			<img :src="item.goodsImg" class="goods_thumb"/>
 			<div class="goods_info">
@@ -46,6 +46,8 @@
 		mounted(){
 			
 			this.getGoodsInfo()
+			
+			
 		}
 	}
 </script>
