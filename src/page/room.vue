@@ -1,7 +1,7 @@
 <template>
 	<div class="room" v-if="show">
 		<Player-Box :room="roomObj"></Player-Box>
-		<!-- <Advert-Box :room="roomObj"></Advert-Box> -->
+		 <Advert-Box :room="roomObj"></Advert-Box> 
 		<Menu-Box :room="roomObj"></Menu-Box>
 		<!--<button @click="clear()" style="position:absolute;left:0;top:0;font-size: 16px;padding: 5px 10px;">双清</button>-->
 	</div>
