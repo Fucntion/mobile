@@ -3,6 +3,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+
+
 const routes = [{
 	path: '/room/:id',
 	name:'room',
@@ -16,9 +18,17 @@ const routes = [{
 		require(['./page/404.vue'], resolve)
 	}
 },{
+	path: '/goods/:id',
+	name:'goods',
+	component: function(resolve) {
+		require(['./page/goods.vue'], resolve)
+	}
+},
+{
 	path: '*',
 	redirect: '/404',
-}]
+}
+]
 
 const router = new VueRouter({
 	routes
@@ -34,8 +44,7 @@ Vue.http.options.emulateHTTP = true
 Vue.http.interceptors.push((request, next) => {
 
 	var url = 'http://saas.icloudinn.com/api/v1'
-	var token = '?access-token=' + '6m3vB_FtMzXHeVDN0-fkSPk6GdwoIkMQdvhHG02q'
-		
+	var token = '?access-token=' + sessionStorage.getItem('token')	
 
 	if(request.url.indexOf('shop=') == 0) {
 		request.url = request.url.substr(5) +'?system_id=10'
@@ -51,8 +60,12 @@ Vue.http.interceptors.push((request, next) => {
 
 })
 
+
 //处理一些公共的配置
+
 import App from './app.vue'
+
+
 new Vue({
 	el:'#app',
 	router,

@@ -1,6 +1,5 @@
 <template>
-
-	<div id="TcPlayer"><iframe id="TcPlayer_iframe" name="TcPlayer" src="./static/TcPlayer.html"  frameborder="0" scrolling="no"></iframe></div>
+<div id="TcPlayer"></div>
 </template>
 
 
@@ -13,20 +12,7 @@
 		data() {
 
 			return {
-				videoOptions: {
-					source: {
-						type: "application/x-mpegURL",
-						src: 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8',
-						withCredentials: false
-					},
-					poster: "http://live.icloudinn.com/img3/logo.png",
-					live: true,
-					autoplay: false,
-					height: 414 * 9 / 16,
-					language: 'zh-cn'
-
-				}
-
+				
 			}
 
 		},
@@ -38,8 +24,17 @@
 		},
 		mounted(){
 
-			document.getElementById('TcPlayer').style.height = document.body.clientWidth*9/16+'px'
-			window.hls = this.room.hls_downstream_address
+			this.$nextTick(function(){
+				var width = document.body.offsetWidth
+				var option={
+						"m3u8": this.room.hls_downstream_address||"http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8",
+						"autoplay" : false,      //iOS下safari浏览器是不开放这个能力的
+						"coverpic" : this.room.logo_url||"http://live.icloudinn.com/img3/logo.png",
+						"width" :  width,//视频的显示宽度，请尽量使用视频分辨率宽度
+						"height" : width*9/16//视频的显示高度，请尽量使用视频分辨率高度
+					}
+				var player = new TcPlayer('TcPlayer',option)
+			})
 		}
 	}
 </script>

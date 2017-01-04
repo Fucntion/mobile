@@ -1,7 +1,7 @@
 <template>
 <div class="goods_box" >
 	<template  v-for="(item,index) in goodsList"  v-if="show">
-		<div class="goods_item">
+		<div class="goods_item" @click="goods(item)">
 			<img :src="item.goodsImg" class="goods_thumb"/>
 			<div class="goods_info">
 				<h3 class="title">{{item.goodsName}}</h3>
@@ -29,7 +29,16 @@
 			
 		},
 		methods: {
+			goods:function(itemInfo){
+				if(!itemInfo.goodsId){
+					alert('商品信息有误')
+					return
+				}
+				sessionStorage.isActiveGoodsInfo = JSON.stringify(itemInfo)
+				this.$router.push('/goods/'+itemInfo.goodsId)
+			},
 			getGoodsInfo:function(){
+
 				//拿到的是商品的id组成的数组,需要换回来商品信息
 				var url = "shop=http://shop.icloudinn.com/index.php/Api/Goods/findMerchantGoodsListByIds"
 				//我实在不敢看下面这行又黑又脆弱的代码
@@ -43,11 +52,8 @@
 				})
 			}
 		},
-		mounted(){
-			
+		mounted(){	
 			this.getGoodsInfo()
-			
-			
 		}
 	}
 </script>

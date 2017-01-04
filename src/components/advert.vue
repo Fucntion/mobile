@@ -22,7 +22,8 @@
 					name: 'currentSwiper',
 					// // 所有配置均为可选（同Swiper配置）
 					notNextTick: true,
-					autoplay: 3000
+					loop : true,
+					autoplay: 5000
 				},
 			}
 

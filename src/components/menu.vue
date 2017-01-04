@@ -2,11 +2,11 @@
 	<div class="menuBox" v-if="menuListData.length>0">
 		<div class="menuItemBox">
 			<template v-for="(menu,index) in menuListData">
-			<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
-		</template>
+				<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
+			</template>
 		</div>
-		<div class="content_box" :is="curretView" :propsMenu="propsMenu" :key="propsMenu">
-			
+		<div class="content_box" :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu">
+
 		</div>
 	</div>
 </template>
@@ -45,6 +45,7 @@
 			}
 		},
 		methods: {
+
 			isActive: function(index,type) {
 			
 
@@ -75,7 +76,7 @@
 			this.curretView = 'communit'
 			this.$nextTick(function () {
 				//margin-top 10
-				this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
+				this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'  	
 			})
 
 			
