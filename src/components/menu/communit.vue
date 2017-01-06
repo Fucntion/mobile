@@ -1,6 +1,6 @@
 <template>
 <div class="communit_box">
-	{{room.channel_id}}
+
 	<iframe id="communit_iframe" name="communit" src="./static/communit_dev.html"  frameborder="0" scrolling="no"></iframe>
 </div>
 </template>

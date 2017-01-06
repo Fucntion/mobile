@@ -23,11 +23,17 @@ const routes = [{
 	component: function(resolve) {
 		require(['./page/goods.vue'], resolve)
 	}
-},
-{
-	path: '*',
-	redirect: '/404',
+},{
+	path: '/pay',
+	name:'pay',
+	component: function(resolve) {
+		require(['./page/pay.vue'], resolve)
+	}
 }
+// {
+// 	path: '*',
+// 	redirect: '/404',
+// }
 ]
 
 const router = new VueRouter({
@@ -44,10 +50,10 @@ Vue.http.options.emulateHTTP = true
 Vue.http.interceptors.push((request, next) => {
 
 	var url = 'http://saas.icloudinn.com/api/v1'
-	var token = '?access-token=' + sessionStorage.getItem('token')	
+	var token = '?access-token=' + localStorage.getItem('token')	
 
 	if(request.url.indexOf('shop=') == 0) {
-		request.url = request.url.substr(5) +'?system_id=10'
+		request.url = request.url.substr(5)+token +'&system_id=10'
 	} else if(request.url.indexOf('mock=') == 0){
 		request.url = request.url.substr(5)
 	}else{

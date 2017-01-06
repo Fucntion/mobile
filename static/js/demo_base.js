@@ -124,18 +124,18 @@ function showMsg(msg) {
         fromAccountNick = '未知用户';
     }
     ul = document.getElementById("video_sms_list");
-    var maxDisplayMsgCount = 4;
-    //var opacityStep=(1.0/4).toFixed(2);
-    var opacityStep = 0.2;
-    var opacity;
-    var childrenLiList = $("#video_sms_list").children();
-    if (childrenLiList.length == maxDisplayMsgCount) {
-        $("#video_sms_list").children(":first").remove();
-        for (var i = 0; i < maxDisplayMsgCount; i++) {
-            opacity = opacityStep * (i + 1) + 0.2;
-            $('#video_sms_list').children().eq(i).css("opacity", opacity);
-        }
-    }
+    // var maxDisplayMsgCount = 6;
+    // //var opacityStep=(1.0/4).toFixed(2);
+    // var opacityStep = 0.1;
+    // var opacity;
+    // var childrenLiList = $("#video_sms_list").children();
+    // if (childrenLiList.length == maxDisplayMsgCount) {
+    //     $("#video_sms_list").children(":first").remove();
+    //     for (var i = 0; i < maxDisplayMsgCount; i++) {
+    //         opacity = opacityStep * (i + 1) + 0.4;
+    //         $('#video_sms_list').children().eq(i).css("opacity", opacity);
+    //     }
+    // }
     li = document.createElement("li");
     paneDiv = document.createElement("div");
     paneDiv.setAttribute('class', 'video-sms-pane');

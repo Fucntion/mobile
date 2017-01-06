@@ -5,8 +5,8 @@
 				<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
 			</template>
 		</div>
-		<div class="content_box" :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu">
-
+		<div class="content_box">
+			<div :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu"></div>
 		</div>
 	</div>
 </template>
@@ -63,6 +63,7 @@
 
 				}
 				this.$nextTick(function () {
+
 					this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
 				})		
 			}
