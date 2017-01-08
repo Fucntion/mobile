@@ -15,35 +15,35 @@
 <body>
 
 
-	<!--聊天部分 start-->
+<!--聊天部分 start-->
 
-			<div class="video-discuss">
-				<ul class="video-sms-list" id="video_sms_list">
+		<div class="video-discuss">
+			<ul class="video-sms-list" id="video_sms_list">
 
 
-				</ul>
-				<div class="video-discuss-pane">
-					<div class="video-discuss-tool" id="video-discuss-tool">
-						<!--<span class="like-icon zoomIn green"></span>-->
-						<a href="javascript:void(0);" class="video-discuss-sms" onclick="smsPicClick()"></a>
+			</ul>
+			<div class="video-discuss-pane">
+				<div class="video-discuss-tool" id="video-discuss-tool">
+					<!--<span class="like-icon zoomIn green"></span>-->
+					<a href="javascript:void(0);" class="video-discuss-sms" onclick="smsPicClick()"></a>
 
-						<a href="javascript:void(0);" class="video-discuss-like" onclick="sendGroupLoveMsg()"></a>
-					</div>
-					<div class="video-discuss-form" id="video-discuss-form" style="display: none">
-						<input type="text" class="video-discuss-input" id="send_msg_text">
-						<a href="javascript:void(0);" class="video-discuss-face" onclick="showEmotionDialog()"></a>
-						<button class="video-discuss-button" onclick="onSendMsg()">发送</button>
-					</div>
-					<div class="video-discuss-emotion" id="video-discuss-emotion" style="display: none">
-						<div class="video-emotion-pane">
-							<ul id="emotionUL">
-							</ul>
-						</div>
+					<a href="javascript:void(0);" class="video-discuss-like" onclick="sendGroupLoveMsg()"></a>
+				</div>
+				<div class="video-discuss-form" id="video-discuss-form" style="display: none">
+					<input type="text" class="video-discuss-input" id="send_msg_text">
+					<a href="javascript:void(0);" class="video-discuss-face" onclick="showEmotionDialog()"></a>
+					<button class="video-discuss-button" onclick="onSendMsg()">发送</button>
+				</div>
+				<div class="video-discuss-emotion" id="video-discuss-emotion" style="display: none">
+					<div class="video-emotion-pane">
+						<ul id="emotionUL">
+						</ul>
 					</div>
 				</div>
 			</div>
+		</div>
 
-	<!--聊天部分 end-->
+<!--聊天部分 end-->
 
 
 <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
@@ -226,7 +226,6 @@
 			loginInfo.identifier =identifier
 
 			localStorage.setItem('userSig', response.data.imsig)//备用
-			console.log(loginInfo)
 			sdkLogin()
 			
 		})

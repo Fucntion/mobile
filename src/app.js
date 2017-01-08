@@ -45,7 +45,7 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
 Vue.http.options.emulateJSON = true
-Vue.http.options.emulateHTTP = true
+// Vue.http.options.emulateHTTP = true
 
 Vue.http.interceptors.push((request, next) => {
 
@@ -53,7 +53,7 @@ Vue.http.interceptors.push((request, next) => {
 	var token = '?access-token=' + localStorage.getItem('token')	
 
 	if(request.url.indexOf('shop=') == 0) {
-		request.url = request.url.substr(5)+token +'&system_id=10'
+		request.url = request.url.substr(5)+token
 	} else if(request.url.indexOf('mock=') == 0){
 		request.url = request.url.substr(5)
 	}else{
