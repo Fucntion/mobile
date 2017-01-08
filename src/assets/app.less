@@ -687,6 +687,32 @@ ul.express-detail {
         text-align: center;
     }
 }
+.isdefault{
+    background-color: #fff;
+    border: 0 none;
+    outline: none;
+     display: table-cell; 
+    overflow: hidden;
+    padding: 10px 0;
+    min-height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    position: relative;
+    input{
+        font-size: 14px;
+    }
+    label{
+        color: #666;
+        position: absolute;
+        top: 0;
+        left: 16px;
+        right: 0;
+        bottom: 0;
+        line-height: 48px;
+        
+    }
+
+}
 .edit_address_box {
     z-index: 100;
     .edit_address_container {
@@ -696,13 +722,13 @@ ul.express-detail {
             border-bottom: 1px solid #e5e5e5;
                 width: 100%;
     padding: 0;
-            label {
+            &>label {
                 display: table-cell;
                 width: 90px;
                 line-height: 28px;
                 padding: 10px 0;
             }
-            input {
+            &>input {
                 width: 99%;
                 background-color: #fff;
                 border: 0 none;
