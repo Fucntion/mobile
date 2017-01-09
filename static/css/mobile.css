@@ -249,7 +249,7 @@ bottom: 0;
 width:100%;
 }
 .video-discuss-tool {
-    
+    visibility: hidden;
 }
 
 .video-discuss-sms {

@@ -1,17 +1,26 @@
 <template>
-	<router-view></router-view>
+	
 </template>
 
 <script>
+
 	export default {
-		name: 'yunshang',
+		name: 'cover',
+		props:['room'],
 		data() {
+
 			return {
 
 			}
+
+		},
+		components: {
+
 		},
 		methods: {
-			
+			into:function(){
+				
+			}
 		},
 		mounted() {
 
@@ -20,5 +29,5 @@
 </script>
 
 <style lang="less">
-	@import './assets/app.less';
+
 </style>

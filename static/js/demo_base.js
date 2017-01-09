@@ -78,9 +78,11 @@ function sdkLogin() {
         function (identifierNick) {
             //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
             webim.Log.info('webim登录成功');
+            
             applyJoinBigGroup(avChatRoomId);//加入大群
             hideDiscussForm();//隐藏评论表单
             initEmotionUL();//初始化表情
+            $('.video-discuss-tool').css('visibility','visible')
         },
         function (err) {
             alert(err.ErrorInfo);
@@ -168,16 +170,16 @@ function showMsg(msg) {
             contentSpan.innerHTML = convertMsgtoHtml(msg);
             break;
         case webim.GROUP_MSG_SUB_TYPE.REDPACKET://群红包消息
-            contentSpan.innerHTML = "[群红包消息]" + convertMsgtoHtml(msg);
+            contentSpan.innerHTML = "[红包]" + convertMsgtoHtml(msg);
             break;
         case webim.GROUP_MSG_SUB_TYPE.LOVEMSG://群点赞消息
             //业务自己可以增加逻辑，比如展示点赞动画效果
-            contentSpan.innerHTML = "[群点赞消息]" + convertMsgtoHtml(msg);
+            contentSpan.innerHTML = "[点赞]" + convertMsgtoHtml(msg);
             //展示点赞动画
             showLoveMsgAnimation();
             break;
         case webim.GROUP_MSG_SUB_TYPE.TIP://群提示消息
-            contentSpan.innerHTML = "[群提示消息]" + convertMsgtoHtml(msg);
+            contentSpan.innerHTML = "[提示]" + convertMsgtoHtml(msg);
             break;
     }
     textDiv.appendChild(nickNameSpan);
@@ -300,6 +302,7 @@ function convertGroupTipMsgToHtml(content) {
     switch (opType) {
         case webim.GROUP_TIP_TYPE.JOIN://加入群
             userIdList = content.getUserIdList();
+          
             //text += opUserId + "邀请了";
             for (var m in userIdList) {
                 text += userIdList[m] + ",";
@@ -308,11 +311,13 @@ function convertGroupTipMsgToHtml(content) {
                     break;
                 }
             }
+
             text = text.substring(0, text.length - 1);
-            text += "进入房间";
+            text += "进入房间222";
             //房间成员数加1
             memberCount = $('#user-icon-fans').html();
             $('#user-icon-fans').html(parseInt(memberCount) + 1);
+            
             break;
         case webim.GROUP_TIP_TYPE.QUIT://退出群
             text += opUserId + "离开房间";

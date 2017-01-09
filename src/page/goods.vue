@@ -1,6 +1,6 @@
 <template>
 	<div class="goods" v-if="show">
-		<div class="topbar"><i class="left" @click="$router.go(-1)"></i></div>
+		<!--<div class="topbar"><i class="left" @click="$router.go(-1)"></i></div>-->
 		<div class="img">
 			<template v-if="goodsInfo.goodsImgs.length>0">
 				<swiper :options="swiperOption" class="advertBox" v-if="advertListData.length>0">
@@ -25,7 +25,7 @@
 
 		<div class="more">
 			<div class="detail btn" :class="{ active: isActive=='detail' }" @click="changeActive('detail')">产品详情</div>
-			<div class="order btn" :class="{ active: isActive=='order' }" @click="changeActive('order')">成交订单</div>
+			<!--<div class="order btn" :class="{ active: isActive=='order' }" @click="changeActive('order')">成交订单</div>-->
 		</div>
 		<div class="bottom">
 			<button class="buy" @click="isBuy=true">立即购买</button>
@@ -34,7 +34,7 @@
 			<!--{{goodsInfo.goodsDetails.goodsDesc}}-->
 			<div id="J_DivItemDesc" class="content"><img align="absmiddle" src="https://img.alicdn.com/imgextra/i4/1640165576/TB2mCNuXjzyQeBjy1zdXXaInpXa_!!1640165576.jpg"></div>
 		</div>
-		<div class="container_order" v-show="isActive=='order'">
+		<!--<div class="container_order" v-show="isActive=='order'">
 			<table>
 				<tr>
 					<th>用户</th>
@@ -47,7 +47,7 @@
 					<td>购买时间</td>
 				</tr>
 			</table>
-		</div>
+		</div>-->
 		<div class="mask" v-show="isBuy"></div>
 		<div class="select_box" v-show="isBuy">
 			<div class="select_info">
@@ -129,7 +129,6 @@
 			},
 			init: function() {
 				this.goodsInfo = JSON.parse(sessionStorage.getItem('isActiveGoodsInfo'))
-				console.log(this.goodsInfo)
 				this.show = true
 			}
 		},

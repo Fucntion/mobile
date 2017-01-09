@@ -14,7 +14,14 @@ export default {
 
 	},
 	methods: {
-
+		init:function(){
+			// var url = ''
+			// this.$http.get()
+			
+		}
+	},
+	mounted(){
+		this.init()
 	}
 }
 </script>

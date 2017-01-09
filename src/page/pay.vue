@@ -66,12 +66,12 @@
 	</div>
 </div>
 
-<div class="block-item">
+<!--<div class="block-item">
 	<span class="liuyan">买家留言：</span>
 	<div class="input-wrapper">
 		<textarea class="msg-container" placeholder="点击给商家留言"></textarea>
 	</div>
-</div>
+</div>-->
 <div class="block-item">
 	<span class="heji">合计</span>
 	<div class="pull_right total">￥{{total}}

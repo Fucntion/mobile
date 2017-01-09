@@ -3,19 +3,17 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-
-
 const routes = [{
-	path: '/room/:id',
+	path: '/pay',//需要把这个规则写在前面，不然会被/:id拦截
+	name:'pay',
+	component: function(resolve) {
+		require(['./page/pay.vue'], resolve)
+	}
+},{
+	path: '/:id',
 	name:'room',
 	component: function(resolve) {
 		require(['./page/room.vue'], resolve)
-	}
-},{
-	path: '/404',
-	name:'notfound',
-	component: function(resolve) {
-		require(['./page/404.vue'], resolve)
 	}
 },{
 	path: '/goods/:id',
@@ -23,17 +21,25 @@ const routes = [{
 	component: function(resolve) {
 		require(['./page/goods.vue'], resolve)
 	}
-},{
-	path: '/pay',
-	name:'pay',
-	component: function(resolve) {
-		require(['./page/pay.vue'], resolve)
-	}
-}
+},
 // {
-// 	path: '*',
-// 	redirect: '/404',
-// }
+// 	path: '/:id',
+// 	name:'cover',
+// 	component: function(resolve) {
+// 		require(['./page/cover.vue'], resolve)
+// 	}
+// },
+{
+	path: '/404',
+	name:'notfound',
+	component: function(resolve) {
+		require(['./page/404.vue'], resolve)
+	}
+},
+{
+	path: '*',
+	redirect: '/404',
+}
 ]
 
 const router = new VueRouter({
@@ -66,11 +72,9 @@ Vue.http.interceptors.push((request, next) => {
 
 })
 
-
 //处理一些公共的配置
 
 import App from './app.vue'
-
 
 new Vue({
 	el:'#app',
