@@ -34,7 +34,7 @@
 					alert('商品信息有误')
 					return
 				}
-				sessionStorage.isActiveGoodsInfo = JSON.stringify(itemInfo)
+				sessionStorage.isActiveGoodsId = itemInfo.goodsId
 				this.$router.push('/goods/'+itemInfo.goodsId)
 			},
 			getGoodsInfo:function(){

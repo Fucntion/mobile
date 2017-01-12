@@ -1,12 +1,12 @@
 <template>
-	<div class="menuBox" v-if="menuListData.length>0">
+	<div class="menuBox" v-if="menuListData.length>0&&isLogin" >
 		<div class="menuItemBox">
 			<template v-for="(menu,index) in menuListData">
 				<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
 			</template>
 		</div>
 		<div class="content_box">
-			<div :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu"></div>
+			<div :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu.title"></div>
 		</div>
 	</div>
 </template>
@@ -38,10 +38,21 @@
 				if(this.curretView==''){return null}
 				for(var k in this.menuListData){
 					if(this.menuListData[k].isActive==true){
+						
 						return this.menuListData[k]
+						
 					}
 				}
 				
+			},
+			isLogin:function(){
+				var isLogin =localStorage.getItem('isLogin')
+				console.log(isLogin)
+				if(isLogin=='1'){
+					return true
+				}else{
+					return false
+				}
 			}
 		},
 		methods: {

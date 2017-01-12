@@ -23,23 +23,24 @@
 
 			</ul>
 			<div class="video-discuss-pane">
-				<div class="video-discuss-tool" id="video-discuss-tool">
-					<!--<span class="like-icon zoomIn green"></span>-->
+				<!--<div class="video-discuss-tool" id="video-discuss-tool">
+					<span class="like-icon zoomIn green"></span>
 					<a href="javascript:void(0);" class="video-discuss-sms" onclick="smsPicClick()"></a>
 
 					<a href="javascript:void(0);" class="video-discuss-like" onclick="sendGroupLoveMsg()"></a>
-				</div>
-				<div class="video-discuss-form" id="video-discuss-form" style="display: none">
-					<input type="text" class="video-discuss-input" id="send_msg_text">
-					<a href="javascript:void(0);" class="video-discuss-face" onclick="showEmotionDialog()"></a>
-					<button class="video-discuss-button" onclick="onSendMsg()">发送</button>
-				</div>
+				</div>-->
 				<div class="video-discuss-emotion" id="video-discuss-emotion" style="display: none">
 					<div class="video-emotion-pane">
 						<ul id="emotionUL">
 						</ul>
 					</div>
 				</div>
+				<div class="video-discuss-form" id="video-discuss-form" style="display: block">
+					<input type="text" class="video-discuss-input" id="send_msg_text">
+					<a href="javascript:void(0);" class="video-discuss-face" onclick="showEmotionDialog()"></a>
+					<button class="video-discuss-button" onclick="onSendMsg()">发送</button>
+				</div>
+				
 			</div>
 		</div>
 
@@ -64,7 +65,7 @@
 			'appIDAt3rd': null, //用户所属应用id，必填
 			'accountType': null, //用户所属应用帐号类型，必填
 			'identifier': null, //当前用户ID,必须是否字符串类型，选填
-			'identifierNick': '89757', //当前用户昵称，选填
+			'identifierNick': JSON.parse(localStorage.getItem('usrInfo')).username||'89757', //当前用户昵称，选填
 			'userSig': null, //当前用户身份凭证，必须是字符串类型，选填
 			'headurl': 'img/2016.gif' //当前用户默认头像，选填
 		};
@@ -176,7 +177,7 @@
 			"11": onRevokeGroupNotify, //群已被回收(全员接收)
 			"255": onCustomGroupNotify//用户自定义通知(默认全员接收)
 		};
-
+ 
 		//监听 群资料变化 群提示消息
 		function onGroupInfoChangeNotify(groupInfo) {
 			webim.Log.warn("执行 群资料变化 回调： " + JSON.stringify(groupInfo));
@@ -194,6 +195,7 @@
 			}
 		}
 
+		//从commnuite.vue中获取winodw.channel_Id
 		var avChatRoomId = parent.channel_id; //默认房间群ID，群类型必须是直播聊天室（AVChatRoom），这个为官方测试ID(托管模式)
 		var selType = webim.SESSION_TYPE.GROUP;
 		var selToID = avChatRoomId; //当前选中聊天id（当聊天类型为私聊时，该值为好友帐号，否则为群号）
@@ -213,28 +215,49 @@
 			document.write('<script src="http://sdklog.isd.com/js/vconsole.min.js"></scr' + 'ipt>');
 		}
 
-		var identifier = parent.localStorage.getItem('account'),
-		url = "http://saas.icloudinn.com/api/v1/consumer/imsig?access-token="+parent.localStorage.getItem('token');
-		console.log('account is'+identifier)
+		var identifier = JSON.parse(localStorage.getItem('usrInfo')).username||parent.localStorage.getItem('account');
+		var url = "http://saas.icloudinn.com/api/v1/consumer/imsig?access-token="+parent.localStorage.getItem('token');
 
 		function start(){
+			//未获取userSig则获取,分多个存，如果哪个变量被我手贱弄烂了。这样就会提示了，如果统一用一个字符串，会太坑爹了
+			if(!sessionStorage.getItem('userSig')||!sessionStorage.getItem('sdkAppID')||!sessionStorage.getItem('appIDAt3rd')||!sessionStorage.getItem('accountType')||!sessionStorage.getItem('identifier')){
+				$.post(url, {account:identifier},function(response, status) {
 			
-			$.post(url, {account:identifier},function(response, status) {
-			
-				if(response.code!=100||response.msg!='success')return
-				loginInfo.sdkAppID = response.data.sdkAppID
-				loginInfo.appIDAt3rd = response.data.sdkAppID
-				loginInfo.accountType = response.data.accountType
-				loginInfo.userSig = response.data.imsig
-				loginInfo.identifier =identifier
+					if(response.code!=100||response.msg!='success')return
+					if(!response.data.imsig){
+						alert('获取im签名失败');
+						return
+					}
+					loginInfo.sdkAppID = response.data.sdkAppID
+					loginInfo.appIDAt3rd = response.data.sdkAppID
+					loginInfo.accountType = response.data.accountType
+					loginInfo.userSig = response.data.imsig
+					loginInfo.identifier =identifier
+					
+					sessionStorage.setItem('userSig', response.data.imsig)//备用
+					sessionStorage.setItem('sdkAppID', response.data.sdkAppID)//备用
+					sessionStorage.setItem('appIDAt3rd',response.data.sdkAppID)//备用
+					sessionStorage.setItem('accountType', response.data.accountType)//备用
+					sdkLogin()	
+				})
+			}else{
 
-				localStorage.setItem('userSig', response.data.imsig)//备用
+				loginInfo.sdkAppID = sessionStorage.getItem('sdkAppID')
+				loginInfo.appIDAt3rd = sessionStorage.getItem('sdkAppID')
+				loginInfo.accountType = sessionStorage.getItem('accountType')
+				loginInfo.userSig = sessionStorage.getItem('userSig')
+				loginInfo.identifier =identifier
 				sdkLogin()
-				
-				
-			})
+
+			}
+
+			
 		}
+
 		start()
+		
+		
+		
 
 </script>
 </body>

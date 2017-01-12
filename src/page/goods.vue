@@ -1,25 +1,29 @@
 <template>
 	<div class="goods" v-if="show">
 		<!--<div class="topbar"><i class="left" @click="$router.go(-1)"></i></div>-->
-		<div class="img">
-			<template v-if="goodsInfo.goodsImgs.length>0">
-				<swiper :options="swiperOption" class="advertBox" v-if="advertListData.length>0">
-					<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
-				</swiper>
+		<swiper ref="goodImgBox" :options="swiperOption" class="goodsImgBox" >
+			<template v-if="goodsInfo.goodsImgs&&goodsInfo.goodsImgs.length>0">
+				<swiper-slide v-for="(value,index) in goodsInfo.goodsImgs" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
 			</template>
 			<template v-else>
-				<img :src="goodsInfo.goodsImg">
+				<swiper-slide :style="{backgroundImage: 'url(' + goodsInfo.goodsImg + ')'}"></swiper-slide>
 			</template>
+		</swiper>
 
-		</div>
 		<div class="info">
 			<h3 class="name">{{goodsInfo.goodsName}}</h3>
 			<div class="price">￥<span>{{goodsInfo.shopPrice}}</span></div>
 			<!--<div class="clear"></div>-->
 			<div class="stock-detail">
-				<dl><dt>运费:免运费</dt></dl>
-				<dl><dt>销量:3.6万</dt></dl>
-				<dl><dt>产地:金华</dt></dl>
+				<dl>
+					<dt>运费:免运费</dt>
+				</dl>
+				<dl>
+					<dt>销量:3.6万</dt>
+				</dl>
+				<dl>
+					<dt>产地:金华</dt>
+				</dl>
 			</div>
 		</div>
 
@@ -30,9 +34,8 @@
 		<div class="bottom">
 			<button class="buy" @click="isBuy=true">立即购买</button>
 		</div>
-		<div class="container_detail" v-show="isActive=='detail'">
-			<!--{{goodsInfo.goodsDetails.goodsDesc}}-->
-			<div id="J_DivItemDesc" class="content"><img align="absmiddle" src="https://img.alicdn.com/imgextra/i4/1640165576/TB2mCNuXjzyQeBjy1zdXXaInpXa_!!1640165576.jpg"></div>
+		<div class="container_detail" v-html="goodsInfo.goodsDesc"  v-show="isActive=='detail'">
+			<!--<div id="J_DivItemDesc" class="content"><img align="absmiddle" src="https://img.alicdn.com/imgextra/i4/1640165576/TB2mCNuXjzyQeBjy1zdXXaInpXa_!!1640165576.jpg"></div>-->
 		</div>
 		<!--<div class="container_order" v-show="isActive=='order'">
 			<table>
@@ -59,9 +62,9 @@
 			<div class="select_number">
 				<span class="tip">购买数量:</span>
 				<div class="control">
-					<button ref="minus" @click="total--" class="minus"></button>
-					<input type="text" v-model="total" class="total" />
-					<button ref="plus" @click="total++" class="plus"></button>
+					<button ref="minus" @click="buyNum--" class="minus"></button>
+					<input type="text" v-model="buyNum" class="buyNum" />
+					<button ref="plus" @click="buyNum++" class="plus"></button>
 
 				</div>
 
@@ -84,15 +87,15 @@
 
 		name: 'goods',
 		watch: {
-			total: function(n, o) {
+			buyNum: function (n, o) {
 
-				if(n == 1) {
+				if (n == 1) {
 					this.$refs.minus.disabled = true
 				} else {
 					this.$refs.minus.disabled = false
 				}
 
-				if(n == this.goodsInfo.goodsStock) {
+				if (n == this.goodsInfo.goodsStock) {
 					this.$refs.plus.disabled = true
 				} else {
 					this.$refs.plus.disabled = false
@@ -100,10 +103,15 @@
 
 			}
 		},
+		components:{
+			swiper,
+			swiperSlide,
+			swiperPlugins
+		},
 		data() {
 
 			return {
-				total: 1,
+				buyNum: 1,
 				isBuy: false,
 				show: false,
 				isActive: 'detail',
@@ -113,30 +121,66 @@
 					name: 'currentSwiper',
 					// // 所有配置均为可选（同Swiper配置）
 					notNextTick: true,
-					loop: true,
-					autoplay: 5000
+					direction: 'vertical',
+					height:300,//默认300
+					// loop: true,
+					autoplay: false
 				},
 			}
 
 		},
 		methods: {
-			changeActive: function(current) {
+			changeActive: function (current) {
 				this.isActive = current
 			},
-			goPay: function() {
-				sessionStorage.setItem('total', this.total)
+			escape2Html:function(str) {
+				var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"'};
+				return str.replace(/&(lt|gt|nbsp|amp|quot);/ig,function(all,t){return arrEntities[t];});
+			},
+			goPay: function () {
+				sessionStorage.setItem('buyNum', this.buyNum)
+				sessionStorage.setItem('isActiveGoodsInfo',JSON.stringify(this.goodsInfo))
 				this.$router.push('/pay')
 			},
-			init: function() {
-				this.goodsInfo = JSON.parse(sessionStorage.getItem('isActiveGoodsInfo'))
-				this.show = true
+			init: function () {
+				
+				this.swiperOption.height = document.body.offsetWidth;
+				
+				var url ='shop=http://shop.icloudinn.com/index.php/Api/Goods/getGoodsDetails',
+					goodsId = this.$route.params.goodsId
+
+				if(isNaN(goodsId)){
+					alert('商品信息有误')
+					return
+				}
+				this.$http.post(url,{goodsId:goodsId}).then((response)=>{
+					//这里是商品详情，还可能有商品的图片列表，但是这里默认都不上传多张图片
+					this.goodsInfo =response.body.data.goodsDesc
+					this.goodsInfo.goodsDesc = this.escape2Html(this.goodsInfo.goodsDesc)
+					
+					this.show =true
+				},(response)=>{
+					alert(response.body)
+				})
+
+				
+
+
 			}
 		},
 		mounted() {
 			this.init()
+			
+			// for(var k in this.$refs){
+				// console.log(this.$refs[k])
+			// }
 		}
 	}
 </script>
 <style lang="less">
-
+.swiper-slide{
+	background-repeat: no-repeat;
+	background-position: center;
+	/*background-size: */
+}
 </style>

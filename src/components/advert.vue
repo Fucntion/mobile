@@ -1,5 +1,5 @@
 <template>
-	<swiper :options="swiperOption" class="advertBox" v-if="advertListData.length>0">
+	<swiper :options="swiperOption" id="advertBox" class="advertBox" v-if="advertListData.length>0">
 		<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
 	</swiper>
 </template>
@@ -37,6 +37,9 @@
 
 		},
 		mounted(){
+			this.$nextTick(function(){
+				document.getElementById('advertBox').style.height = document.body.clientWidth*0.2+'px'
+			})
 			this.advertListData = this.room.pluginObj.advert
 		}
 	}

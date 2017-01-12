@@ -74,13 +74,13 @@ function handlderMsg(msg) {
 //sdk登录
 function sdkLogin() {
     //web sdk 登录
+
     webim.login(loginInfo, listeners, options,
         function (identifierNick) {
             //identifierNick为登录用户昵称(没有设置时，为帐号)，无登录态时为空
             webim.Log.info('webim登录成功');
-            
             applyJoinBigGroup(avChatRoomId);//加入大群
-            hideDiscussForm();//隐藏评论表单
+            // hideDiscussForm();//隐藏评论表单
             initEmotionUL();//初始化表情
             $('.video-discuss-tool').css('visibility','visible')
         },
@@ -125,6 +125,17 @@ function showMsg(msg) {
     if (!fromAccountNick) {
         fromAccountNick = '未知用户';
     }
+
+
+    //手动hack群名称，我也是要哭
+    if(fromAccountNick=='@TIM#SYSTEM'){
+       fromAccountNick = '公共' 
+    }
+    //统一截取十二个字长度做名称
+    // fromAccountNick =fromAccountNick.substring(0,12)+'...'
+
+
+
     ul = document.getElementById("video_sms_list");
     // var maxDisplayMsgCount = 6;
     // //var opacityStep=(1.0/4).toFixed(2);
@@ -313,7 +324,10 @@ function convertGroupTipMsgToHtml(content) {
             }
 
             text = text.substring(0, text.length - 1);
-            text += "进入房间222";
+            text += " 回来了";
+
+
+
             //房间成员数加1
             memberCount = $('#user-icon-fans').html();
             $('#user-icon-fans').html(parseInt(memberCount) + 1);
@@ -608,8 +622,8 @@ function onSendMsg() {
         webim.Log.info("发消息成功");
         $("#send_msg_text").val('');
 
-        hideDiscussForm();//隐藏评论表单
-        showDiscussTool();//显示评论工具栏
+        // hideDiscussForm();//隐藏评论表单
+        // showDiscussTool();//显示评论工具栏
         hideDiscussEmotion();//隐藏表情
     }, function (err) {
         webim.Log.error("发消息失败:" + err.ErrorInfo);

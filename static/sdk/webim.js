@@ -1493,8 +1493,10 @@ var webim = { // namespace object webim
 
         if (isLogin()) {
             if (cmd == 'login') {
+                
                 url += '&identifier=' + encodeURIComponent(ctx.identifier) + '&usersig=' + ctx.userSig;
             } else {
+
                 if (ctx.tinyid && ctx.a2) {
                     url += '&tinyid=' + ctx.tinyid + '&a2=' + ctx.a2;
                 } else {

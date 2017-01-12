@@ -16,7 +16,7 @@ const routes = [{
 		require(['./page/room.vue'], resolve)
 	}
 },{
-	path: '/goods/:id',
+	path: '/goods/:goodsId',
 	name:'goods',
 	component: function(resolve) {
 		require(['./page/goods.vue'], resolve)
@@ -30,19 +30,16 @@ const routes = [{
 // 	}
 // },
 {
-	path: '/404',
+	path: '*',
 	name:'notfound',
 	component: function(resolve) {
 		require(['./page/404.vue'], resolve)
 	}
-},
-{
-	path: '*',
-	redirect: '/404',
 }
 ]
 
 const router = new VueRouter({
+	mode: 'history',
 	routes
 })
 
@@ -61,6 +58,7 @@ Vue.http.interceptors.push((request, next) => {
 	if(request.url.indexOf('shop=') == 0) {
 		request.url = request.url.substr(5)+token
 	} else if(request.url.indexOf('mock=') == 0){
+		//针对没有token的接口
 		request.url = request.url.substr(5)
 	}else{
 		request.url = url + request.url + token

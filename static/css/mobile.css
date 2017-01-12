@@ -175,6 +175,7 @@ em, i {
     right: 0;
     top:10px;
     overflow-y: scroll;
+    overflow: hidden;
 }
 
 .video-sms-list {
@@ -184,14 +185,18 @@ em, i {
     box-sizing: border-box;
     width: 100%;
     color: #fff;
-    padding: 0 15px;
+    padding: 0 10px;
 }
 
 .video-sms-list li {
-    margin-bottom: 5px
+    width:100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+   
 }
 
-.video-sms-list li:nth-child(1) {
+/*好尴尬*/
+/*.video-sms-list li:nth-child(1) {
     opacity: .4
 }
 
@@ -201,19 +206,20 @@ em, i {
 
 .video-sms-list li:nth-child(3) {
     opacity: .8
-}
+}*/
 
 .video-sms-pane {
     display: inline-block
 }
 
 .video-sms-text {
+    box-sizing: border-box;
+    width: 414px;
     padding: 2px 10px;
     font-size: 14px;
     background-color: #fff;
     border-radius: 10px;
     text-align: left;
-    max-width: 250px;
     line-height: 18px;
     color: #000;
     word-wrap: break-word
@@ -242,7 +248,8 @@ em, i {
 }
 
 .video-discuss-pane{
-padding: 15px;
+    
+/*padding: 15px;*/
 box-sizing: border-box;
 position:fixed;
 bottom: 0;
@@ -250,6 +257,7 @@ width:100%;
 }
 .video-discuss-tool {
     visibility: hidden;
+    
 }
 
 .video-discuss-sms {
@@ -280,33 +288,38 @@ width:100%;
 
 .video-discuss-form {
     height: 30px;
-    background: url(../img/form-back.png);
-    padding: 8px 60px 10px 8px;
+    
+    /*background: url(../img/form-back.png);*/
+    padding: 4px 95px 10px 4px;
+
     position: relative
 }
 
 .video-discuss-input {
-    width: 85%;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
     height: 30px;
-    vertical-align: top;
-    padding: 0 13% 0 2%;
-    border-radius: 2px
+    padding-left: 2%;
+    /*vertical-align: top;*/
+    border-radius: 2px;
+    border-bottom :1px solid #c0c0c0;
 }
 
 .video-discuss-button {
-    background-color: #dc4b53;
+    background-color: #09bb07;
     height: 30px;
     color: #fff;
-    width: 45px;
+    width: 50px;
     position: absolute;
     right: 10px;
     font-size: 14px;
-    top: 8px;
+    top: 4px;
     border-radius: 2px
 }
 
 .video-discuss-face {
-    background: url(../img/face.png) no-repeat;
+    background: url(../img/emoj.png) no-repeat;
     background-size: 20px 20px;
     width: 20px;
     height: 20px;
@@ -317,7 +330,7 @@ width:100%;
 }
 
 .video-discuss-face:focus, .video-discuss-face:hover {
-    background-image: url(../img/face_hover.png)
+    background-image: url(../img/emoj_hover.png)
 }
 
 .like-icon {
@@ -389,9 +402,10 @@ width:100%;
 }
 
 .video-discuss-emotion {
-    height: 140px;
+    /*height: 160px;*/
     background-color: #fff;
     padding: 8px;
+    /*margin-bottom: 6px;*/
     position: relative
 }
 
@@ -401,13 +415,14 @@ width:100%;
 }
 
 .video-emotion-pane ul {
-    margin: 12px;
-    padding: 0;
+    /*margin: 12px;*/
+    padding: 12px;
     overflow: hidden;
     border-top: 1px #CCC solid;
     border-left: 1px #CCC solid;
     list-style: none;
-    width: 333px
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .video-emotion-pane ul li {

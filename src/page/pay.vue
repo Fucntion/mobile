@@ -2,11 +2,10 @@
 <div class="paybox" v-if="show">
 
 <div class="express" >
-	<template v-if="true">
-	<!--<template v-if="addrList.length>0&&defaultAddr.length>0">-->
+	<!--<template v-if="true">-->
+	<template v-if="addrList.length>0">
 		<div class="empty" @click="isAddress=true">
 			<ul class="express-detail">
-
 				<li class="clearfix">
 					<span class="name">
 						收货人：{{defaultAddr.userName}}
@@ -87,8 +86,8 @@
 <div class="pay_bottom">
 	<div class="pull_right ">
 		<span class="tip">合计：</span>
-		<span class="js_price">￥{{total}}.</span>
-		<span class="price_sub">00</span>
+		<span class="js_price">￥{{total}}</span>
+		<span v-if="total>1" class="price_sub">.00</span>
 
 		<button class="commit_btn" @click="getOrder()">提交订单</button>
 
@@ -336,6 +335,12 @@
 							}
 							
 						}
+
+						if(this.addrList.length==0){
+							this.defaultAddr = {}
+							this.orderInfo.putAddrWay = 2
+							this.orderInfo.addrId = null
+						}
 					}else{
 						alert(response.body.msg)
 					}
@@ -361,7 +366,7 @@
 				
 			},
 			checkAddress: function(checkAddress) {
-
+				
 				//修改显示
 				this.defaultAddr = checkAddress
 
@@ -381,9 +386,28 @@
 
 			},
 			getOrder: function() {
+
+				//收货地址验证
+				if(this.orderInfo.putAddrWay==1){
+					if(isNaN(parseInt(this.orderInfo.addrId))){
+						alert('收货地址未选择')
+						return
+					}
+				}
+				
+				if(this.orderInfo.putAddrWay==2){
+					// 包含了null、空字符串检测
+					if(!this.orderInfo.addr||!this.orderInfo.phone||!this.orderInfo.userName){
+						alert('请输入正确的收货信息')
+						return
+					}
+
+				}
+				//货款验证
+				// if()
 				var url = "shop=http://shop.icloudinn.com/index.php/Api/Orders/submitOrder"
 				// 表单各种验证
-
+				console.log(this.orderInfo)
 
 				this.$http.post(url, this.orderInfo).then((response) => {
 					console.log(response.body.data)
@@ -409,12 +433,16 @@
 			},
 
 			pay: function(paras) {
+				var self = this;
 				WeixinJSBridge.invoke('getBrandWCPayRequest',paras,
 					function(res) {
-						if(res.err_msg == "get_brand_wcpay_request：ok") {
-							alert(res.err_msg);
-							// location.href = 'http://wx.icloudinn.com/livepay/example/success.html';
-						} // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+						//支付完了就跳转，按照常理是应该做一个“是否支付完成”的框，后续优化了
+						if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+							alert('支付成功,将返回直播间');
+							console.log(self,sessionStorage.getItem('roomid'))
+							self.$router.push('/'+sessionStorage.getItem('roomid'))
+							// document.write('1111')
+						}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。 
 					}
 				);
 			},
@@ -430,7 +458,7 @@
 
 				//初始化订单信息
 				this.orderInfo.goodsId = this.goodsInfo.goodsId
-				this.orderInfo.buyNum = sessionStorage.getItem('total')
+				this.orderInfo.buyNum = sessionStorage.getItem('buyNum')
 
 				// this.orderInfo.putAddrWay = 2 //先用2测试下
 				// this.orderInfo.addr = '海南省海口市美兰区桂林洋高校区海南师范大学3507'
@@ -444,6 +472,7 @@
 
 				this.$http.get(url).then((response) => {
 					var result = response.body.data.addrList
+					// alert(JSON.stringify(result))
 					this.addrList = result
 					
 					if(result.length>0){
@@ -455,7 +484,7 @@
 							}	
 						}
 
-						//如果长度大于0且无收货地址，则默认选第一个做默认收货地址
+						//如果长度大于0且无默认收货地址，则默认选第一个做默认收货地址
 						if(this.isEmptyObject(this.defaultAddr)){
 							
 							this.defaultAddr = result[0]
@@ -463,14 +492,16 @@
 						//绑定已选中的id
 						this.isCheckId = this.defaultAddr.addressId
 					}
-					//如果存在默认地址，则将默认地址写进订单信息
+
+					//如果存在默认地址，则将默认地址的id写进订单
 					if(!this.isEmptyObject(this.defaultAddr)){
-						this.orderInfo.putAddrWay = 2 
-						this.orderInfo.addr = this.defaultAddr.address
-						this.orderInfo.phone = this.defaultAddr.userPhone
-						this.orderInfo.userName = this.defaultAddr.userName
+						this.orderInfo.putAddrWay =1
+						this.orderInfo.addrId = this.isCheckId
+					}else{
+						this.orderInfo.putAddrWay =2
 					}
 					// isDefault
+					
 					this.show = true
 				}, (response) => {
 
