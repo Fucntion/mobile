@@ -3,7 +3,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+{
 	path: '/pay',//需要把这个规则写在前面，不然会被/:id拦截
 	name:'pay',
 	component: function(resolve) {
@@ -21,7 +22,14 @@ const routes = [{
 	component: function(resolve) {
 		require(['./page/goods.vue'], resolve)
 	}
+},{
+	path: '/order/:orderId',
+	name:'order',
+	component: function(resolve) {
+		require(['./page/order.vue'], resolve)
+	}
 },
+
 // {
 // 	path: '/:id',
 // 	name:'cover',
@@ -70,9 +78,22 @@ Vue.http.interceptors.push((request, next) => {
 
 })
 
+
+import Vuex from 'vuex'
+Vue.use(Vuex)
 //处理一些公共的配置
 
 import App from './app.vue'
+
+// import Util from './util.js'
+
+// Vue.prototype.util = Util
+
+
+
+
+
+
 
 new Vue({
 	el:'#app',

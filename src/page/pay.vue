@@ -89,7 +89,7 @@
 		<span class="js_price">￥{{total}}</span>
 		<span v-if="total>1" class="price_sub">.00</span>
 
-		<button class="commit_btn" @click="getOrder()">提交订单</button>
+		<button class="commit_btn"  ref="pay_btn" @click="getOrder()">提交订单</button>
 
 	</div>
 </div>
@@ -109,7 +109,7 @@
 					<div v-if="isCheckId!=address.addressId" class="icon-check"></div>
 					<div v-else class="icon-check icon-checked"></div>
 					<p>
-						<span class="address-name" style="margin-right: 5px;">{{address.userName}}</span>,
+						<span class="address-name" style="margin-right: 5px;">{{address.userName}},</span>
 						<span class="address-tel">{{address.userPhone}}</span>
 					</p>
 					<span class="address-str address-str-sf">收货地址：{{address.address}}</span>
@@ -130,7 +130,6 @@
 		</div>
 	</div>
 </div>
-
 
 
 <div class="mask-full" @click="isEditAddress=false" v-show="isEditAddress"></div>
@@ -207,6 +206,9 @@
 
 </style>
 <script>
+
+// import Loading from 'v-loading'
+import store from 'store'
 	export default {
 
 		name: 'pay',
@@ -216,6 +218,7 @@
 		data() {
 
 			return {
+				disabled:false,
 				isCheckId: null, //当前选中的地址id
 				isAddAddress:false,
 				isAddressInfo:{
@@ -387,6 +390,12 @@
 			},
 			getOrder: function() {
 
+				store.commit('openLoading','订单提交中')
+				if(this.disabled){
+					alert('请勿重复点击支付按钮')
+					return
+				}
+				this.disabled =true
 				//收货地址验证
 				if(this.orderInfo.putAddrWay==1){
 					if(isNaN(parseInt(this.orderInfo.addrId))){
@@ -407,10 +416,9 @@
 				// if()
 				var url = "shop=http://shop.icloudinn.com/index.php/Api/Orders/submitOrder"
 				// 表单各种验证
-				console.log(this.orderInfo)
 
 				this.$http.post(url, this.orderInfo).then((response) => {
-					console.log(response.body.data)
+
 					this.getPayConfig(response.body.data.orderId)
 
 				}, (response) => {
@@ -426,21 +434,29 @@
 					}
 				this.$http.post(payurl, xhrObj).then(function(response) {
 
-					this.pay(response.body.data)
+					this.pay(response.body.data,orderId)
 				}, function(response) {
 					alert(response.boday.msg)
 				})
 			},
 
-			pay: function(paras) {
+			pay: function(paras,orderId) {
 				var self = this;
+
+				//不管支付如何，都让按钮回复可以点击
+				this.disabled=false
+				store.commit('openLoading')
+
 				WeixinJSBridge.invoke('getBrandWCPayRequest',paras,
 					function(res) {
+
+
+						
 						//支付完了就跳转，按照常理是应该做一个“是否支付完成”的框，后续优化了
 						if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 							alert('支付成功,将返回直播间');
-							console.log(self,sessionStorage.getItem('roomid'))
-							self.$router.push('/'+sessionStorage.getItem('roomid'))
+
+							self.$router.push('/order/'+orderId)
 							// document.write('1111')
 						}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。 
 					}
@@ -509,8 +525,16 @@
 
 			}
 		},
+		components:{
+			// Loading
+
+		},
 		mounted() {
 			this.init()
+
+			store.commit('closeLoading')
+
+			
 		}
 	}
 </script>

@@ -1,18 +1,21 @@
 <template>
 <div class="communit_box">
-	<!--<div class="open_Communit_Box" v-if="!isIframeLoading"><button  class="open_Communit" >开始聊天</button></div>-->
-	<iframe id="communit_iframe"  name="communit" src="./static/communit_dev.html?v=2"  frameborder="0" scrolling="no"></iframe>
+	<iframe v-if="roomInfo.load" id="communit_iframe"  name="communit" src="./static/communit_dev.html?v=2"  frameborder="0" scrolling="no"></iframe>
+	<!--<div v-else>
+		聊天框走丢了
+	</div>-->
 </div>
 </template>
 
 <script>
+	import store from 'store'
 	export default {
 		name: 'communit',
-		props:['propsMenu','room'],
+		props:['room'],
 		data() {
 
 			return {
-			
+				roomInfo:store.getters.getRoom
 			}
 
 		},
@@ -26,7 +29,12 @@
 
 		},
 		mounted(){
+			//这行代码好重要。。。如果没有就不显示聊天框了
+			if(!this.room.channel_id){
+				roomInfo.load = false
+			}
 			window.channel_id =this.room.channel_id
+			
 
 		}
 	}

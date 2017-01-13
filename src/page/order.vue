@@ -1,11 +1,13 @@
 <template>
-<div>not found</div>
+<div>
+    感谢支付
+    {{$route.params.orderId}}
+</div>
 </template>
 
 <script>
 export default {
-
-	name: 'notfounf',
+	name: 'order',
 	data() {
 
 		return {

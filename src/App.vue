@@ -1,20 +1,32 @@
 <template>
-	<router-view></router-view>
+	<div id="wrap">
+		<router-view></router-view>
+		<loading v-if="isLoading.show" :text="isLoading.text" ></loading>
+	</div>
 </template>
 
 <script>
+	import {loading} from 'v-loading'
+	import store from 'store'
 	export default {
 		name: 'yunshang',
+		store,
 		data() {
 			return {
-
+				isLoading:store.getters.getLoading
 			}
+		},
+		computed:{
+
 		},
 		methods: {
 			
 		},
 		mounted() {
 
+		},
+		components:{
+			loading
 		}
 	}
 </script>

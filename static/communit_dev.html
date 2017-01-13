@@ -218,43 +218,42 @@
 		var identifier = JSON.parse(localStorage.getItem('usrInfo')).username||parent.localStorage.getItem('account');
 		var url = "http://saas.icloudinn.com/api/v1/consumer/imsig?access-token="+parent.localStorage.getItem('token');
 
-		function start(){
-			//未获取userSig则获取,分多个存，如果哪个变量被我手贱弄烂了。这样就会提示了，如果统一用一个字符串，会太坑爹了
-			if(!sessionStorage.getItem('userSig')||!sessionStorage.getItem('sdkAppID')||!sessionStorage.getItem('appIDAt3rd')||!sessionStorage.getItem('accountType')||!sessionStorage.getItem('identifier')){
-				$.post(url, {account:identifier},function(response, status) {
+		$.post(url,{account:identifier},function(response, status) {
 			
-					if(response.code!=100||response.msg!='success')return
-					if(!response.data.imsig){
-						alert('获取im签名失败');
-						return
-					}
-					loginInfo.sdkAppID = response.data.sdkAppID
-					loginInfo.appIDAt3rd = response.data.sdkAppID
-					loginInfo.accountType = response.data.accountType
-					loginInfo.userSig = response.data.imsig
-					loginInfo.identifier =identifier
-					
-					sessionStorage.setItem('userSig', response.data.imsig)//备用
-					sessionStorage.setItem('sdkAppID', response.data.sdkAppID)//备用
-					sessionStorage.setItem('appIDAt3rd',response.data.sdkAppID)//备用
-					sessionStorage.setItem('accountType', response.data.accountType)//备用
-					sdkLogin()	
-				})
-			}else{
-
-				loginInfo.sdkAppID = sessionStorage.getItem('sdkAppID')
-				loginInfo.appIDAt3rd = sessionStorage.getItem('sdkAppID')
-				loginInfo.accountType = sessionStorage.getItem('accountType')
-				loginInfo.userSig = sessionStorage.getItem('userSig')
-				loginInfo.identifier =identifier
-				sdkLogin()
-
+			if(response.code!=100||response.msg!='success')return
+			if(!response.data.imsig){
+				alert('imsig error:'+response.data.imsig);
+				return
 			}
+			loginInfo.sdkAppID = response.data.sdkAppID
+			loginInfo.appIDAt3rd = response.data.sdkAppID
+			loginInfo.accountType = response.data.accountType
+			loginInfo.userSig = response.data.imsig
+			loginInfo.identifier =identifier
+
+			sdkLogin()	
+		})
+
+		// 心灰意冷，傻逼微信
+		// function start(){
+		// 	//未获取userSig则获取,分多个存，如果哪个变量被我手贱弄烂了。这样就会提示了，如果统一用一个字符串，会太坑爹了
+		// 	if(!sessionStorage.getItem('userSig')||!sessionStorage.getItem('sdkAppID')||!sessionStorage.getItem('appIDAt3rd')||!sessionStorage.getItem('accountType')||!sessionStorage.getItem('identifier')){
+				
+		// 	}else{
+
+		// 		loginInfo.sdkAppID = sessionStorage.getItem('sdkAppID')
+		// 		loginInfo.appIDAt3rd = sessionStorage.getItem('sdkAppID')
+		// 		loginInfo.accountType = sessionStorage.getItem('accountType')
+		// 		loginInfo.userSig = sessionStorage.getItem('userSig')
+		// 		loginInfo.identifier =identifier
+		// 		sdkLogin()
+
+		// 	}
 
 			
-		}
+		// }
 
-		start()
+		// start()
 		
 		
 		

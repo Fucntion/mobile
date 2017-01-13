@@ -83,9 +83,11 @@
 		swiperSlide,
 		swiperPlugins
 	} from 'vue-awesome-swiper'
+	import store from 'store'
 	export default {
 
 		name: 'goods',
+		store,
 		watch: {
 			buyNum: function (n, o) {
 
@@ -141,6 +143,7 @@
 				sessionStorage.setItem('buyNum', this.buyNum)
 				sessionStorage.setItem('isActiveGoodsInfo',JSON.stringify(this.goodsInfo))
 				this.$router.push('/pay')
+				store.commit('openLoading')
 			},
 			init: function () {
 				
@@ -169,6 +172,8 @@
 			}
 		},
 		mounted() {
+
+			store.commit('closeLoading')
 			this.init()
 			
 			// for(var k in this.$refs){

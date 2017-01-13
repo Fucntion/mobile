@@ -2,18 +2,20 @@
 <div class="goods_box" >
 	<template  v-for="(item,index) in goodsList"  v-if="show">
 		<div class="goods_item" @click="goods(item)">
-			<img :src="item.goodsImg" class="goods_thumb"/>
+			<div class="goods_thumb" :style="{backgroundImage: 'url(' + item.goodsImg + ')'}"></div>
 			<div class="goods_info">
 				<h3 class="title">{{item.goodsName}}</h3>
 				<span class="price">￥{{item.shopPrice}}</span><span class="saleCount">{{item.saleCount}}人付款</span>
+				<button class="quickBuy">立即购买</button>
 			</div>
 		</div>
+		<div class="clear"></div>
 	</template>	
 </div>
 </template>
 
 <script>
-	
+	import store from 'store'
 	export default {
 		name: 'goods',
 		props:['propsMenu'],
@@ -36,6 +38,9 @@
 				}
 				sessionStorage.isActiveGoodsId = itemInfo.goodsId
 				this.$router.push('/goods/'+itemInfo.goodsId)
+
+				store.commit('openLoading')
+
 			},
 			getGoodsInfo:function(){
 

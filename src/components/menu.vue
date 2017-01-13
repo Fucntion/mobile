@@ -1,12 +1,13 @@
 <template>
 	<div class="menuBox" v-if="menuListData.length>0&&isLogin" >
 		<div class="menuItemBox">
-			<template v-for="(menu,index) in menuListData">
-				<div :class="{active: menu.isActive}" class="menuItem" @click="isActive(index,menu.type)">{{menu.title}}</div>
+			<template v-for="(item,index) in menuListData">
+				<!--意味着菜单名称不能一样了哥哥-->
+				<div :class="{active:item.title==menu.title}" class="menuItem" @click="isActive(index,item)">{{item.title}}</div>
 			</template>
 		</div>
 		<div class="content_box">
-			<div :is="curretView" :room="room" :propsMenu="propsMenu" :key="propsMenu.title"></div>
+			<div :is="menu.type" :room="room" :propsMenu="menu" :key="menu.title"></div>
 		</div>
 	</div>
 </template>
@@ -15,15 +16,17 @@
 	import Communit from './menu/communit.vue'
 	import Show from './menu/show.vue'
 	import Goods from './menu/goods.vue'
+	import store from 'store'
 	export default {
 
 		name: 'menu',
+		store,
 		props:['room'],
 		data() {
 
 			return {
 				menuListData:[],
-				curretView:''
+				
 			}
 
 		},
@@ -33,17 +36,8 @@
 			Goods
 		},
 		computed:{
-			propsMenu:function(){
-
-				if(this.curretView==''){return null}
-				for(var k in this.menuListData){
-					if(this.menuListData[k].isActive==true){
-						
-						return this.menuListData[k]
-						
-					}
-				}
-				
+			menu:function(){
+				return store.getters.getMenu
 			},
 			isLogin:function(){
 				var isLogin =localStorage.getItem('isLogin')
@@ -56,28 +50,22 @@
 			}
 		},
 		methods: {
+			isActive: function(index,itemMenuInfo) {
 
-			isActive: function(index,type) {
-			
+				store.commit('setCurrentMenu',itemMenuInfo)
 
-				for(var key in this.menuListData) {
-					
-					this.menuListData[key].isActive = false
-					
-					if(key == index) {
-						//需要在初始化的时候就加上isActive属性，不然vue检测不到运行后动态添加的属性
-						this.menuListData[key].isActive = true
-						this.curretView =type 
-						continue;
-					}
-					
-
-				}
 				this.$nextTick(function () {
-
-					this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
+					// this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
 				})		
 			}
+			// isActive: function(type) {
+			// 	store.commit('setCurrentView',type)
+		
+				
+			// 	this.$nextTick(function () {
+			// 		// this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'    	
+			// 	})		
+			// }
 		},
 		mounted(){
 			var tempArr =this.room.pluginObj.menu.map(function(x){ 
@@ -85,10 +73,10 @@
 				return x
 			})
 			this.menuListData = [{title: '边看边聊',type: 'communit',isActive:true}].concat(tempArr)
-			this.curretView = 'communit'
+
 			this.$nextTick(function () {
 				//margin-top 10
-				this.$el.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'  	
+				document.querySelector('.content_box').style.height=document.body.offsetHeight-this.$el.offsetTop-36+'px'  	
 			})
 
 			

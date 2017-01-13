@@ -21,6 +21,7 @@
 	import AdvertBox from 'plugin/advert.vue'
 	import PlayerBox from 'plugin/player.vue'
 	import MenuBox from 'plugin/menu.vue'
+	import store from 'store'
 	export default {
 
 		name: 'room',
@@ -43,7 +44,7 @@
 				
 				var url = 'mock=http://saas.icloudinn.com/api/v1/deals/room/' + sessionStorage.getItem('roomid')
 				this.$http.get(url).then((response) => {
-
+					
 					this.roomObj = response.body.data
 					document.title = this.roomObj.title
 
@@ -58,7 +59,15 @@
 
 					//如果不是第一次登录就直接显示，如果是第一次登录就在登录后显示
 					if(localStorage.isLogin=='1'){
+
 						this.show = true
+						var self =this
+						var obj ={
+							text:self.roomObj.titel,
+							load:true
+						}
+						store.commit('setRoom',obj)
+
 					}else{
 						alert('需要登录')
 						localStorage.clear()
@@ -73,9 +82,7 @@
 			},
 			setRoomId: function () {
 
-				// var pathArr = location.pathname.split('/')
-				// var index = hashArr.indexOf('#') + 1
-				// var roomid = hashArr[1].toString()
+
 				var roomid = this.$route.params.id;
 
 				// 房间id是字符而且与现有不相同才替换
@@ -106,7 +113,9 @@
 
 					//第一次打开微信
 					if(location.href.indexOf('code') != -1 &&localStorage.isopenLogin=='1') {
-
+					
+	
+						store.commit('openLoading','加载信息')
 						function getUrlParam(name) {
 							var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)") //构造一个含有目标参数的正则表达式对象
 							var r = window.location.search.substr(1).match(reg) //匹配目标参数
@@ -127,11 +136,16 @@
 							localStorage.setItem('account', result.account)
 							localStorage.setItem('openid',result.openid)
 							localStorage.setItem('isLogin',1)
-							this.getRoomInfo()
+											
+							store.commit('openLoading')
 
+							this.getRoomInfo()
+											
+					
 							//修改登录的状态，但凡需要登录的操作都需要在这个后面执行	
 						}, (response) => {
 							// this.$router.push('/404')
+							store.commit('openLoading')
 						})
 
 					}
@@ -154,5 +168,11 @@
 </script>
 
 <style lang="less">
-
+.room{
+	position: absolute;
+	top:0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
 </style>
