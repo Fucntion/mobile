@@ -3,7 +3,7 @@
 	<div class="room" v-if="show">
 		<template v-if="!cover">
 			<Player-Box  :room="roomObj"></Player-Box>
-			<!--<Advert-Box :room="roomObj"></Advert-Box> -->
+			<Advert-Box :room="roomObj"></Advert-Box> 
 			<Menu-Box :room="roomObj"></Menu-Box>	
 		</template>
 		<template v-else>
@@ -77,7 +77,7 @@
 					
 						
 				}, (response) => {
-					// this.$router.push('/404')
+					this.$router.push('notfound')
 				})
 			},
 			setRoomId: function () {
@@ -127,7 +127,7 @@
 						this.$http.post('/deal/wxlogin',{code:code}).then((response) => {
 							
 							if(response.body.code!=100 || response.body.msg!='success'){
-								// this.$router.push('/404')
+								this.$router.push('notfound')
 								return
 							}
 							localStorage.setItem('usrInfo', JSON.stringify(response.body.data))
@@ -136,7 +136,8 @@
 							localStorage.setItem('account', result.account)
 							localStorage.setItem('openid',result.openid)
 							localStorage.setItem('isLogin',1)
-											
+							var d = new Date()
+							localStorage.setItem('login_old_time',d.getTime())		
 							store.commit('openLoading')
 
 							this.getRoomInfo()
@@ -144,7 +145,7 @@
 					
 							//修改登录的状态，但凡需要登录的操作都需要在这个后面执行	
 						}, (response) => {
-							// this.$router.push('/404')
+							this.$router.push('notfound')
 							store.commit('openLoading')
 						})
 
@@ -159,7 +160,11 @@
 			}
 			
 		},
-		mounted(){							
+		mounted(){	
+
+			if(isNaN(this.$route.params.id)){
+				this.$router.push('notfound')
+			}						
 			this.setRoomId()
 
 			this.setUsrInfo()

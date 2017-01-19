@@ -29,14 +29,6 @@ const routes = [
 		require(['./page/order.vue'], resolve)
 	}
 },
-
-// {
-// 	path: '/:id',
-// 	name:'cover',
-// 	component: function(resolve) {
-// 		require(['./page/cover.vue'], resolve)
-// 	}
-// },
 {
 	path: '*',
 	name:'notfound',
@@ -64,11 +56,33 @@ Vue.http.interceptors.push((request, next) => {
 	var token = '?access-token=' + localStorage.getItem('token')	
 
 	if(request.url.indexOf('shop=') == 0) {
+		var oldTime = localStorage.getItem('login_old_time'),
+			d = new Date(),
+			newTime = d.getTime()
+
+			if(newTime-parseInt(oldTime)>3600*4*1000){
+				alert('登录过期，请重新登录')
+				localStorage.clear()
+				//进到直播间，如果地址不对的话交给404，这里不用管
+				this.$router.push('/'+sessionStorage.getItem('roomid'))
+			}
+		
 		request.url = request.url.substr(5)+token
 	} else if(request.url.indexOf('mock=') == 0){
 		//针对没有token的接口
 		request.url = request.url.substr(5)
 	}else{
+		var oldTime = localStorage.getItem('login_old_time'),
+			d = new Date(),
+			newTime = d.getTime()
+
+			if(newTime-parseInt(oldTime)>3600*4*1000){
+				alert('登录过期，请重新登录')
+				localStorage.clear()
+				//进到直播间，如果地址不对的话交给404，这里不用管
+				this.$router.push('/'+sessionStorage.getItem('roomid'))
+			}
+
 		request.url = url + request.url + token
 	}
 
@@ -84,15 +98,6 @@ Vue.use(Vuex)
 //处理一些公共的配置
 
 import App from './app.vue'
-
-// import Util from './util.js'
-
-// Vue.prototype.util = Util
-
-
-
-
-
 
 
 new Vue({

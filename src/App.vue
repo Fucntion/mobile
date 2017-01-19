@@ -1,19 +1,19 @@
 <template>
 	<div id="wrap">
 		<router-view></router-view>
-		<loading v-if="isLoading.show" :text="isLoading.text" ></loading>
+		<!--<loading v-if="isLoading.show" :text="isLoading.text" ></loading>-->
 	</div>
 </template>
 
 <script>
-	import {loading} from 'v-loading'
+	// import {loading} from 'v-loading'
 	import store from 'store'
 	export default {
 		name: 'yunshang',
 		store,
 		data() {
 			return {
-				isLoading:store.getters.getLoading
+				// isLoading:store.getters.getLoading
 			}
 		},
 		computed:{
@@ -26,7 +26,7 @@
 
 		},
 		components:{
-			loading
+			// loading
 		}
 	}
 </script>
