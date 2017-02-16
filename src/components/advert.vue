@@ -1,6 +1,6 @@
 <template>
 	<swiper :options="swiperOption" id="advertBox" class="advertBox" v-if="advertListData.length>0">
-		<swiper-slide v-for="(value,index) in advertListData" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
+		<swiper-slide  v-for="(value,index) in advertListData" @click="open(value.link)" :style="{backgroundImage: 'url(' + value.pic + ')'}"></swiper-slide>
 	</swiper>
 </template>
 
@@ -34,7 +34,9 @@
 			swiperPlugins
 		},
 		methods: {
-
+			open:function(url){
+				location.href = url
+			}
 		},
 		mounted(){
 			this.$nextTick(function(){
@@ -46,5 +48,5 @@
 </script>
 
 <style lang="less">
-
+    
 </style>

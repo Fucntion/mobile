@@ -450,7 +450,7 @@ import store from 'store'
 				WeixinJSBridge.invoke('getBrandWCPayRequest',paras,
 					function(res) {
 
-
+						store.commit('closeLoading')
 						
 						//支付完了就跳转，按照常理是应该做一个“是否支付完成”的框，后续优化了
 						if(res.err_msg == "get_brand_wcpay_request:ok" ) {
