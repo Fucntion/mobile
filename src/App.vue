@@ -20,9 +20,11 @@
 
 		},
 		methods: {
-			
+
 		},
 		mounted() {
+			$('#wrap').height($(window).height()-10)
+			$('#wrap').css('overflow','hidden')
 
 		},
 		components:{

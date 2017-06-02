@@ -1,8 +1,10 @@
 <template>
+	<!-- 景区特色栏目 -->
 <div class="goods_box" >
 	<template  v-for="(item,index) in goodsList"  v-if="show">
 		<div class="goods_item" @click="goods(item)">
-			<div class="goods_thumb" :style="{backgroundImage: 'url(' + item.goodsImg + ')'}"></div>
+			<!-- <div class="goods_thumb" :style="{'background-image':'url(' + item.goodsImg + ')'}"></div> -->
+			<img class='goods_thumb' :src="item.goodsImg" alt="">
 			<div class="goods_info">
 				<h3 class="title">{{item.goodsName}}</h3>
 				<span class="price">￥{{item.shopPrice}}</span><span class="saleCount">{{item.saleCount}}人付款</span>
@@ -10,7 +12,7 @@
 			</div>
 		</div>
 		<div class="clear"></div>
-	</template>	
+	</template>
 </div>
 </template>
 
@@ -28,7 +30,7 @@
 
 		},
 		components: {
-			
+
 		},
 		methods: {
 			goods:function(itemInfo){
@@ -51,13 +53,14 @@
 				this.$http.post(url,data).then((response)=>{
 					if(response.body.code!=100){alert('商品信息错误')}
 					this.goodsList = response.body.data
+					console.log(this.goodsList)
 					this.show=true
 				},(response)=>{
-					
+
 				})
 			}
 		},
-		mounted(){	
+		mounted(){
 			this.getGoodsInfo()
 		}
 	}

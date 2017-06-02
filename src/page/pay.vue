@@ -140,30 +140,30 @@
 		<div class="edit_address_container">
 
 				<div class="edit_item">
-					<label>收货人：</label> 
+					<label>收货人：</label>
 					<input value="" placeholder="请填写收货人姓名"  v-model="isEditAddressInfo.userName" class="txt txt-black ellipsis js-name">
 				</div>
 				<div class="edit_item">
-					<label>手机号码：</label> 
+					<label>手机号码：</label>
 					<input type="text" value="" v-model="isEditAddressInfo.userPhone" placeholder="请填写收货人手机号码" class="txt txt-black ellipsis js-tel">
 				</div>
 				<div class="edit_item">
-					<label>收货地址：</label> 
+					<label>收货地址：</label>
 					<input type="text" value="" v-model="isEditAddressInfo.address" placeholder="请输入收货地址" class="txt txt-black ellipsis js-tel">
 				</div>
 				<div class="edit_item">
-					<label>默认地址：</label> 
-					<div class="isdefault"><input v-model="isEditAddressInfo.isDefault" id="default" type="checkbox"   /><label for="default">设此地址为默认地址</label></div>	
+					<label>默认地址：</label>
+					<div class="isdefault"><input v-model="isEditAddressInfo.isDefault" id="default" type="checkbox"   /><label for="default">设此地址为默认地址</label></div>
 				</div>
 
 			</div>
 			<div class="action-container">
 			<a class="js-address-save" @click="saveEditAddr()">保存</a>
-			
+
 				<a class="js-address-delete" @click="delAddr(isEditAddressInfo.addressId)">删除收货地址</a>
-			
+
 		</div>
-		
+
 	</div>
 </div>
 
@@ -175,28 +175,28 @@
 		<div class="edit_address_container">
 
 				<div class="edit_item">
-					<label>收货人：</label> 
+					<label>收货人：</label>
 					<input value="" placeholder="请填写收货人姓名"  v-model="isAddressInfo.userName" class="txt txt-black ellipsis js-name">
 				</div>
 				<div class="edit_item">
-					<label>手机号码：</label> 
+					<label>手机号码：</label>
 					<input type="text" value="" v-model="isAddressInfo.userPhone" placeholder="请填写收货人手机号码" class="txt txt-black ellipsis js-tel">
 				</div>
 				<div class="edit_item">
-					<label>收货地址：</label> 
+					<label>收货地址：</label>
 					<input type="text" value="" v-model="isAddressInfo.address" placeholder="请输入收货地址" class="txt txt-black ellipsis js-tel">
 				</div>
 				<div class="edit_item">
-					<label>默认地址：</label> 
-					<div class="isdefault"><input v-model="isAddressInfo.isDefault" id="default2" type="checkbox"   /><label for="default2">设此地址为默认地址</label></div>	
+					<label>默认地址：</label>
+					<div class="isdefault"><input v-model="isAddressInfo.isDefault" id="default2" type="checkbox"   /><label for="default2">设此地址为默认地址</label></div>
 				</div>
 
 			</div>
 			<div class="action-container">
 			<a class="js-address-save" @click="saveAddAddr()">保存</a>
-			
+
 		</div>
-		
+
 	</div>
 </div>
 
@@ -267,27 +267,27 @@ import store from 'store'
 
 					if(response.body.code ==100){
 
-					
+
 					for(var k=0;k<this.addrList.length;k++){
 						if(k==this.isEditAddressInfo.addrid){
 							this.addrList[k] = JSON.parse(JSON.stringify(this.isEditAddressInfo))
 							break
 						}
 					}
-					this.isEditAddressInfo={}	
+					this.isEditAddressInfo={}
 					this.isEditAddress =false
 
-						
+
 					}else{
 						alert(response.body.msg)
 					}
-					
+
 
 				},(response)=>{
 					alert(response.body)
 				})
 
-				
+
 			},
 			saveAddAddr:function(){
 
@@ -313,11 +313,11 @@ import store from 'store'
 							isDefault:false//默认不是收货地址
 						}
 						this.isAddAddress =false
-						
+
 					}else{
 						alert(response.body.msg)
 					}
-					
+
 
 				},(response)=>{
 					alert(response.body)
@@ -336,7 +336,7 @@ import store from 'store'
 								this.addrList.splice(k,1)
 								break
 							}
-							
+
 						}
 
 						if(this.addrList.length==0){
@@ -356,9 +356,9 @@ import store from 'store'
 				this.isAddAddress=true
 			},
 			editAddress: function(item) {
-				
+
 				this.isEditAddressInfo =JSON.parse(JSON.stringify(item))
-				
+
 				if(item.isDefault=='1'){
 					this.isEditAddressInfo.isDefault = true
 				}else{
@@ -366,10 +366,10 @@ import store from 'store'
 				}
 
 				this.isEditAddress =true
-				
+
 			},
 			checkAddress: function(checkAddress) {
-				
+
 				//修改显示
 				this.defaultAddr = checkAddress
 
@@ -385,7 +385,7 @@ import store from 'store'
 				this.orderInfo.phone = checkAddress.userPhone
 				this.orderInfo.userName = checkAddress.userName
 				this.isAddress = false
-				
+
 
 			},
 			getOrder: function() {
@@ -403,7 +403,7 @@ import store from 'store'
 						return
 					}
 				}
-				
+
 				if(this.orderInfo.putAddrWay==2){
 					// 包含了null、空字符串检测
 					if(!this.orderInfo.addr||!this.orderInfo.phone||!this.orderInfo.userName){
@@ -428,7 +428,7 @@ import store from 'store'
 			getPayConfig: function(orderId) {
 				var payurl = 'shop=http://shop.icloudinn.com/index.php/Api/WxPay/wxpay',
 					xhrObj = {
-						openid: localStorage.getItem('openid'),
+						openid: sessionStorage.getItem('openid'),
 						trade_type: 'JSAPI',
 						orderid: orderId
 					}
@@ -451,22 +451,22 @@ import store from 'store'
 					function(res) {
 
 						store.commit('closeLoading')
-						
+						// alert(res.err_msg);
 						//支付完了就跳转，按照常理是应该做一个“是否支付完成”的框，后续优化了
 						if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 							alert('支付成功,将返回直播间');
 
 							self.$router.push('/order/'+orderId)
 							// document.write('1111')
-						}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。 
+						}     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
 					}
 				);
 			},
-			isEmptyObject:function(e) {  
-				var t;  
-				for (t in e)  
-					return !1;  
-				return !0  
+			isEmptyObject:function(e) {
+				var t;
+				for (t in e)
+					return !1;
+				return !0
 			} ,
 			init: function() {
 
@@ -490,19 +490,19 @@ import store from 'store'
 					var result = response.body.data.addrList
 					// alert(JSON.stringify(result))
 					this.addrList = result
-					
+
 					if(result.length>0){
 
 						for(var k in result){
 							if(result[k].isDefault=='1'){
 								this.defaultAddr = result[k]
 								break
-							}	
+							}
 						}
 
 						//如果长度大于0且无默认收货地址，则默认选第一个做默认收货地址
 						if(this.isEmptyObject(this.defaultAddr)){
-							
+
 							this.defaultAddr = result[0]
 						}
 						//绑定已选中的id
@@ -517,7 +517,7 @@ import store from 'store'
 						this.orderInfo.putAddrWay =2
 					}
 					// isDefault
-					
+
 					this.show = true
 				}, (response) => {
 
@@ -534,7 +534,7 @@ import store from 'store'
 
 			store.commit('closeLoading')
 
-			
+
 		}
 	}
 </script>

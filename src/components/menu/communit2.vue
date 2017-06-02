@@ -74,7 +74,7 @@ require('static/js/demo_group_notice.js')
 					'appIDAt3rd': null, //用户所属应用id，必填
 					'accountType': null, //用户所属应用帐号类型，必填
 					'identifier': null, //当前用户ID,必须是否字符串类型，选填
-					'identifierNick': JSON.parse(localStorage.getItem('usrInfo')).username||'89757', //当前用户昵称，选填
+					'identifierNick': JSON.parse(sessionStorage.getItem('usrInfo')).username||'89757', //当前用户昵称，选填
 					'userSig': null, //当前用户身份凭证，必须是字符串类型，选填
 					'headurl': 'img/2016.gif' //当前用户默认头像，选填
 				};
@@ -222,8 +222,8 @@ require('static/js/demo_group_notice.js')
 				
 				
 
-				var identifier = JSON.parse(localStorage.getItem('usrInfo')).username||parent.localStorage.getItem('account');
-				var url = "http://saas.icloudinn.com/api/v1/consumer/imsig?access-token="+parent.localStorage.getItem('token');
+				var identifier = JSON.parse(sessionStorage.getItem('usrInfo')).username||parent.sessionStorage.getItem('account');
+				var url = "http://saas.icloudinn.com/api/v1/consumer/imsig?access-token="+parent.sessionStorage.getItem('token');
 
 				//未获取userSig则获取,分多个存，如果哪个变量被我手贱弄烂了。这样就会提示了，如果统一用一个字符串，会太坑爹了
 					if(!sessionStorage.getItem('userSig')||!sessionStorage.getItem('sdkAppID')||!sessionStorage.getItem('appIDAt3rd')||!sessionStorage.getItem('accountType')||!sessionStorage.getItem('identifier')){

@@ -49,44 +49,41 @@ Vue.use(VueResource)
 
 Vue.http.options.emulateJSON = true
 // Vue.http.options.emulateHTTP = true
-
+//这里是全局vue-resource的拦截器 用于在请求发起前和发起后做一些事情
 Vue.http.interceptors.push((request, next) => {
-
+	//请求发起前
 	var url = 'http://saas.icloudinn.com/api/v1'
-	var token = '?access-token=' + localStorage.getItem('token')	
+	var token = '?access-token=' + sessionStorage.getItem('token')
 
 	if(request.url.indexOf('shop=') == 0) {
-		var oldTime = localStorage.getItem('login_old_time'),
-			d = new Date(),
-			newTime = d.getTime()
+		console.log('shop');
 
-			if(newTime-parseInt(oldTime)>3600*4*1000){
-				alert('登录过期，请重新登录')
-				localStorage.clear()
-				//进到直播间，如果地址不对的话交给404，这里不用管
-				this.$router.push('/'+sessionStorage.getItem('roomid'))
-			}
-		
 		request.url = request.url.substr(5)+token
 	} else if(request.url.indexOf('mock=') == 0){
 		//针对没有token的接口
+		console.log('mock');
 		request.url = request.url.substr(5)
 	}else{
-		var oldTime = localStorage.getItem('login_old_time'),
-			d = new Date(),
-			newTime = d.getTime()
-
-			if(newTime-parseInt(oldTime)>3600*4*1000){
-				alert('登录过期，请重新登录')
-				localStorage.clear()
-				//进到直播间，如果地址不对的话交给404，这里不用管
-				this.$router.push('/'+sessionStorage.getItem('roomid'))
-			}
-
+		console.log('else');
 		request.url = url + request.url + token
+		console.log(request.url)
 	}
 
 	next((response) => {
+		//请求发送后
+		//这里针对token过期 重新跳转微信拿到code用于换取token
+		if(response.body.code==101){
+			sessionStorage.removeItem('isopenLogin')
+			sessionStorage.setItem('isopenLogin', '1')
+			if(window.danteng==0){
+				//测试
+			var openidUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx058722867fec4f54&redirect_uri=http://test.icloudinn.com/'+sessionStorage.roomid+'&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+			}else{
+				//正式
+			var openidUrl = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx8884a4a5b234d465&redirect_uri=http://tv.icloudinn.com/'+sessionStorage.roomid+'&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect';
+			}
+			location.href = openidUrl
+		}
 		return response
 	})
 

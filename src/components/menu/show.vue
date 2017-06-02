@@ -1,4 +1,5 @@
 <template>
+	<!-- 游玩路线栏目和景区介绍 -->
 <div class="show_box" v-html="propsMenu.show">
 
 </div>
@@ -12,12 +13,12 @@
 		data() {
 
 			return {
-				
+
 			}
 
 		},
 		components: {
-			
+
 		},
 		methods: {
 
